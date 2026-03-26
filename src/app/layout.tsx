@@ -74,7 +74,7 @@ export const metadata: Metadata = {
   // Replace value with the code from:
   // https://search.google.com/search-console → Add Property → HTML tag
   verification: {
-    google: "REPLACE_WITH_YOUR_GSC_VERIFICATION_CODE",
+    google: "AtUrm0DLVzGU_5iT_PtKiFXjHwIuOAsH4s_FeGuT1CA",
   },
 
   alternates: {
