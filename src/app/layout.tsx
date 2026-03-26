@@ -12,7 +12,7 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-const BASE_URL = "https://azimuthal-solstice.vercel.app";
+const BASE_URL = "https://dabcloud.in";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
