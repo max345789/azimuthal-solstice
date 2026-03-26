@@ -18,29 +18,29 @@ export function Header() {
         {/* Center Nav Pill */}
         <nav className="hidden lg:flex items-center bg-[#151515]/90 backdrop-blur-md border border-white/5 rounded-full px-2 py-2">
           <div className="flex items-center px-4 space-x-8 text-sm font-medium text-gray-300">
-            <Link href="#" className="text-white hover:text-white transition-colors">Home</Link>
-            <Link href="#" className="hover:text-white transition-colors">Terminal App</Link>
-            <Link href="#" className="hover:text-white transition-colors">Assets</Link>
-            <Link href="#" className="hover:text-white transition-colors">Features</Link>
-            <Link href="#" className="hover:text-white transition-colors">Pricing</Link>
-            <Link href="#" className="hover:text-white transition-colors">FAQ</Link>
+            <Link href="/" className="text-white hover:text-white transition-colors">Home</Link>
+            <Link href="/dashboard" className="hover:text-white transition-colors">Terminal App</Link>
+            <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
+            <Link href="/#features" className="hover:text-white transition-colors">Features</Link>
+            <Link href="/billing" className="hover:text-white transition-colors">Pricing</Link>
+            <Link href="/#faq" className="hover:text-white transition-colors">FAQ</Link>
           </div>
-          
+
           <div className="flex items-center ml-4 pl-4 border-l border-white/10 gap-2">
-            <Link href="#" className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-medium transition-colors">
-              Protection <ArrowUpRight className="w-3 h-3 text-gray-400" />
+            <Link href="/cli-auth" className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-medium transition-colors">
+              CLI Login <ArrowUpRight className="w-3 h-3 text-gray-400" />
             </Link>
-            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center cursor-pointer">
+            <Link href="/dashboard" className="w-8 h-8 rounded-full bg-white flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
               <Shield className="w-4 h-4 text-black" />
-            </div>
+            </Link>
           </div>
         </nav>
 
         {/* Right CTA */}
         <div className="flex items-center gap-3">
-          <Link href="/signup" className="flex items-center gap-2 text-sm font-medium text-white hover:text-gray-300 transition-colors">
+          <Link href="/dashboard" className="flex items-center gap-2 text-sm font-medium text-white hover:text-gray-300 transition-colors">
             <User className="w-4 h-4" />
-            Create Account
+            Dashboard
           </Link>
         </div>
 

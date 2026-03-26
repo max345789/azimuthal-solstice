@@ -32,7 +32,7 @@ export function CtaSection() {
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
-              href="/signup"
+              href="/cli-auth"
               className="px-10 py-5 rounded-full bg-white text-black font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"
             >
               Awaken Krud AI <ArrowUpRight className="w-5 h-5 text-black" />

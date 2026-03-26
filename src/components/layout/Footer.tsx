@@ -14,9 +14,9 @@ export function Footer() {
         </div>
         
         <div className="flex items-center gap-8 text-sm font-medium text-gray-400">
-          <Link href="#" className="hover:text-white transition-colors">Philosophy</Link>
-          <Link href="#" className="hover:text-white transition-colors">Documentation</Link>
-          <Link href="#" className="hover:text-white transition-colors">Security</Link>
+          <Link href="/blog/what-is-a-cli-agent" className="hover:text-white transition-colors">Philosophy</Link>
+          <Link href="/blog/how-to-install-krud-ai" className="hover:text-white transition-colors">Documentation</Link>
+          <Link href="https://github.com/max345789/krud-ai" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Security</Link>
         </div>
         
         <div className="text-sm text-gray-600 font-medium">

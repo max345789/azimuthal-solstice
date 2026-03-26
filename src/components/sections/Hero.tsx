@@ -54,13 +54,13 @@ export function Hero() {
 
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
             <Link
-              href="/app"
+              href="/dashboard"
               className="px-8 py-4 rounded-full bg-[#181818] border border-white/5 text-white text-sm font-semibold hover:bg-white/10 transition-colors flex items-center gap-2"
             >
               Open App <ArrowUpRight className="w-4 h-4 text-gray-400" />
             </Link>
             <Link
-              href="#more"
+              href="/#features"
               className="px-8 py-4 rounded-full bg-white text-black text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               Discover More
