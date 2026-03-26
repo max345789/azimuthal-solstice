@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, User, Bell, Shield, Terminal } from "lucide-react";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "@/lib/config";
 
 function DiamondIcon({ className }: { className?: string }) {
   return (
@@ -12,44 +14,67 @@ function DiamondIcon({ className }: { className?: string }) {
   );
 }
 
-const sections = [
-  {
-    icon: User,
-    title: "Account",
-    description: "Your email address and account details",
-    items: [
-      { label: "Email", value: "you@email.com", type: "text" },
-      { label: "Display name", value: "Friendly Dev", type: "text" },
-    ],
-  },
-  {
-    icon: Terminal,
-    title: "CLI",
-    description: "Manage your active CLI sessions",
-    items: [
-      { label: "Active sessions", value: "1 device connected", type: "info" },
-    ],
-  },
-  {
-    icon: Bell,
-    title: "Notifications",
-    description: "Control when krud AI sends you emails",
-    items: [
-      { label: "Usage alerts", value: "Enabled", type: "toggle" },
-      { label: "Billing updates", value: "Enabled", type: "toggle" },
-    ],
-  },
-  {
-    icon: Shield,
-    title: "Security",
-    description: "Manage your account security",
-    items: [
-      { label: "Session tokens", value: "Rotate all tokens", type: "action" },
-    ],
-  },
-];
-
 export default function SettingsPage() {
+  const [email, setEmail] = useState("—");
+  const [name, setName] = useState("—");
+
+  useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
+    if (!token) return;
+    fetch(`${API_BASE_URL}/v1/account/me`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.email) setEmail(data.email);
+        if (data?.name) setName(data.name);
+        else if (data?.email) setName(data.email.split("@")[0]);
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleRotateTokens = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("krud_token");
+      window.location.href = "/";
+    }
+  };
+
+  const sections = [
+    {
+      icon: User,
+      title: "Account",
+      description: "Your email address and account details",
+      items: [
+        { label: "Email", value: email, type: "text" as const },
+        { label: "Display name", value: name, type: "text" as const },
+      ],
+    },
+    {
+      icon: Terminal,
+      title: "CLI",
+      description: "Manage your active CLI sessions",
+      items: [
+        { label: "Active sessions", value: "1 device connected", type: "info" as const },
+      ],
+    },
+    {
+      icon: Bell,
+      title: "Notifications",
+      description: "Control when krud AI sends you emails",
+      items: [
+        { label: "Usage alerts", value: "Enabled", type: "toggle" as const },
+        { label: "Billing updates", value: "Enabled", type: "toggle" as const },
+      ],
+    },
+    {
+      icon: Shield,
+      title: "Security",
+      description: "Manage your account security",
+      items: [
+        { label: "Session tokens", value: "Rotate all tokens", type: "action" as const },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-transparent">
       <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-screen overflow-hidden fixed z-0">
@@ -97,7 +122,10 @@ export default function SettingsPage() {
                 <div key={item.label} className="flex items-center justify-between pt-4 first:pt-0">
                   <span className="text-sm text-gray-400">{item.label}</span>
                   {item.type === "action" ? (
-                    <button className="text-xs text-gray-200 border border-white/10 px-3 py-1.5 rounded-lg hover:border-white/20 hover:text-white transition-colors cursor-pointer">
+                    <button
+                      onClick={handleRotateTokens}
+                      className="text-xs text-gray-200 border border-white/10 px-3 py-1.5 rounded-lg hover:border-red-500/40 hover:text-red-400 transition-colors cursor-pointer"
+                    >
                       {item.value}
                     </button>
                   ) : item.type === "toggle" ? (

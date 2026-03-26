@@ -10,8 +10,6 @@ import {
   Clock,
   CheckCircle2,
   AlertTriangle,
-  Copy,
-  Check,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -19,11 +17,7 @@ type AuthState = "default" | "success" | "denied" | "expired";
 
 function DiamondIcon({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 16 16"
-      fill="currentColor"
-      className={className}
-    >
+    <svg viewBox="0 0 16 16" fill="currentColor" className={className}>
       <path d="M8 0l3 8-3 8-3-8z" />
     </svg>
   );
@@ -43,11 +37,27 @@ export default function CliAuthPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = use(searchParams);
-  const codeFromUrl = (params.code as string) || "ABCD-1234";
-  const emailFromUrl = (params.email as string) || "you@email.com";
+  const codeFromUrl = (params.code as string) || (params.user_code as string) || "ABCD-1234";
+  const emailFromUrl = (params.email as string) || "";
 
   const [authState, setAuthState] = useState<AuthState>("default");
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(600);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [email, setEmail] = useState(emailFromUrl);
+  const [emailError, setEmailError] = useState("");
+
+  // Try to load email from stored session
+  useEffect(() => {
+    if (email) return;
+    const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
+    if (!token) return;
+    fetch(`${API_BASE_URL}/v1/account/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => { if (data?.email) setEmail(data.email); })
+      .catch(() => {});
+  }, [email]);
 
   useEffect(() => {
     if (authState !== "default") return;
@@ -70,21 +80,23 @@ export default function CliAuthPage({
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const [actionLoading, setActionLoading] = useState(false);
-
   const handleApprove = async () => {
+    if (!email.trim()) {
+      setEmailError("Please enter your email to approve access.");
+      return;
+    }
+    setEmailError("");
     setActionLoading(true);
     try {
       const formData = new FormData();
       formData.append("user_code", codeFromUrl);
-      formData.append("action", "approve");
+      formData.append("email", email.trim());
       await fetch(`${API_BASE_URL}/device`, {
         method: "POST",
         body: formData,
-        credentials: "include",
       });
     } catch {
-      // ignore network errors — show success UI regardless so CLI polling can continue
+      // show success regardless — CLI polling will catch the result
     } finally {
       setActionLoading(false);
       setAuthState("success");
@@ -93,47 +105,32 @@ export default function CliAuthPage({
 
   const handleDeny = async () => {
     setActionLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("user_code", codeFromUrl);
-      formData.append("action", "deny");
-      await fetch(`${API_BASE_URL}/device`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
-    } catch {
-      // ignore
-    } finally {
+    // No backend deny endpoint — just mark locally; device code expires naturally
+    setTimeout(() => {
       setActionLoading(false);
       setAuthState("denied");
-    }
+    }, 300);
   };
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
-      {/* Subtle warm noise texture for that organic, human feel */}
       <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none fixed z-10" style={{ backgroundImage: "url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')" }} />
-      {/* Organic Flowing Gradients (Blob meshes) from Landing Page */}
       <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-screen overflow-hidden fixed z-0">
         <div className="absolute -top-[20%] -right-[10%] w-[800px] h-[800px] rounded-full bg-gradient-to-br from-[#1a2d2a] to-transparent bg-blend-screen blur-[120px] animate-blob" />
         <div className="absolute top-[10%] -left-[10%] w-[1000px] h-[1000px] rounded-full bg-gradient-to-tr from-[#16211e] via-[#09110d] to-transparent blur-[140px] animate-blob" style={{ animationDelay: "5s" }} />
         <div className="absolute bottom-[0%] right-[20%] w-[600px] h-[600px] rounded-full bg-gradient-to-tl from-[#192b31] to-transparent blur-[100px] animate-blob" style={{ animationDelay: "2s" }} />
       </div>
-      {/* Header */}
+
       <header className="w-full border-b border-[#ffffff0a] bg-transparent/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
             <DiamondIcon className="w-4 h-4 text-gray-200" />
-            <span className="font-semibold text-white text-sm tracking-tight">
-              krud AI
-            </span>
+            <span className="font-semibold text-white text-sm tracking-tight">krud AI</span>
           </Link>
           <span className="text-xs text-gray-400 font-mono">dabcloud.in</span>
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -179,45 +176,22 @@ export default function CliAuthPage({
               <DiamondIcon className="w-3.5 h-3.5 text-gray-200" />
               <AnimatePresence mode="wait">
                 {authState === "default" && (
-                  <motion.span
-                    key="default"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                  >
+                  <motion.span key="default" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
                     Ready to plug in?
                   </motion.span>
                 )}
                 {authState === "success" && (
-                  <motion.span
-                    key="success"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    className="text-krud-green"
-                  >
+                  <motion.span key="success" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="text-krud-green">
                     Terminal Connected
                   </motion.span>
                 )}
                 {authState === "denied" && (
-                  <motion.span
-                    key="denied"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    className="text-krud-red"
-                  >
+                  <motion.span key="denied" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="text-krud-red">
                     Access Denied
                   </motion.span>
                 )}
                 {authState === "expired" && (
-                  <motion.span
-                    key="expired"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    className="text-krud-yellow"
-                  >
+                  <motion.span key="expired" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="text-krud-yellow">
                     Code Expired
                   </motion.span>
                 )}
@@ -225,154 +199,90 @@ export default function CliAuthPage({
             </h1>
             <AnimatePresence mode="wait">
               {authState === "default" && (
-                <motion.p
-                  key="desc-default"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-sm text-gray-400"
-                >
-                  Hey there! Your terminal is gently knocking, asking to connect with krud AI. 🤝
+                <motion.p key="desc-default" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-sm text-gray-400">
+                  Your terminal is requesting access to krud AI.
                 </motion.p>
               )}
               {authState === "success" && (
-                <motion.p
-                  key="desc-success"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-sm text-gray-400"
-                >
+                <motion.p key="desc-success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-sm text-gray-400">
                   Return to your terminal to continue
                 </motion.p>
               )}
               {authState === "denied" && (
-                <motion.p
-                  key="desc-denied"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-sm text-gray-400"
-                >
-                  Run{" "}
-                  <code className="text-gray-200 font-mono text-xs bg-white/5 px-1.5 py-0.5 rounded">
-                    krud login
-                  </code>{" "}
-                  to try again
+                <motion.p key="desc-denied" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-sm text-gray-400">
+                  Run <code className="text-gray-200 font-mono text-xs bg-white/5 px-1.5 py-0.5 rounded">krud login</code> to try again
                 </motion.p>
               )}
               {authState === "expired" && (
-                <motion.p
-                  key="desc-expired"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-sm text-gray-400"
-                >
-                  Run{" "}
-                  <code className="text-gray-200 font-mono text-xs bg-white/5 px-1.5 py-0.5 rounded">
-                    krud login
-                  </code>{" "}
-                  to generate a new code
+                <motion.p key="desc-expired" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-sm text-gray-400">
+                  Run <code className="text-gray-200 font-mono text-xs bg-white/5 px-1.5 py-0.5 rounded">krud login</code> to generate a new code
                 </motion.p>
               )}
             </AnimatePresence>
           </div>
 
           {/* Code Box */}
-          <motion.div
-            layout
-            className="bg-[#090b0a] border border-[#ffffff0a] rounded-xl p-6 mb-4"
-          >
-            <div className="text-xs text-gray-400 uppercase tracking-wider mb-4 font-medium">
-              Your code
-            </div>
+          <motion.div layout className="bg-[#090b0a] border border-[#ffffff0a] rounded-xl p-6 mb-4">
+            <div className="text-xs text-gray-400 uppercase tracking-wider mb-4 font-medium">Your code</div>
             <div className="text-center mb-4">
-              <span className="font-mono text-3xl tracking-[0.3em] text-gray-200 font-bold">
-                {codeFromUrl}
-              </span>
+              <span className="font-mono text-3xl tracking-[0.3em] text-gray-200 font-bold">{codeFromUrl}</span>
             </div>
             <div className="flex items-center justify-center gap-1.5 text-xs">
               <AnimatePresence mode="wait">
                 {authState === "default" && (
-                  <motion.span
-                    key="confirmed"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="flex items-center gap-1.5 text-krud-green/80"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Code confirmed
+                  <motion.span key="confirmed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-1.5 text-krud-green/80">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Code confirmed
                   </motion.span>
                 )}
                 {authState === "success" && (
-                  <motion.span
-                    key="approved"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex items-center gap-1.5 text-krud-green"
-                  >
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    Access granted
+                  <motion.span key="approved" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="flex items-center gap-1.5 text-krud-green">
+                    <ShieldCheck className="w-3.5 h-3.5" /> Access granted
                   </motion.span>
                 )}
                 {authState === "denied" && (
-                  <motion.span
-                    key="denied-code"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex items-center gap-1.5 text-krud-red"
-                  >
-                    <XCircle className="w-3.5 h-3.5" />
-                    Access denied
+                  <motion.span key="denied-code" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="flex items-center gap-1.5 text-krud-red">
+                    <XCircle className="w-3.5 h-3.5" /> Access denied
                   </motion.span>
                 )}
                 {authState === "expired" && (
-                  <motion.span
-                    key="expired-code"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex items-center gap-1.5 text-krud-yellow"
-                  >
-                    <AlertTriangle className="w-3.5 h-3.5" />
-                    Code expired
+                  <motion.span key="expired-code" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="flex items-center gap-1.5 text-krud-yellow">
+                    <AlertTriangle className="w-3.5 h-3.5" /> Code expired
                   </motion.span>
                 )}
               </AnimatePresence>
             </div>
           </motion.div>
 
-          {/* Email Info Box */}
-          <div className="border border-[#ffffff14] bg-white/[0.02] rounded-xl px-5 py-3.5 mb-4">
-            <div className="text-xs text-gray-400 mb-0.5">Logged in as</div>
-            <div className="text-sm text-white font-mono">{emailFromUrl}</div>
-          </div>
+          {/* Email Box */}
+          {authState === "default" && (
+            <div className="border border-[#ffffff14] bg-white/[0.02] rounded-xl px-5 py-3.5 mb-4">
+              <div className="text-xs text-gray-400 mb-1.5">Your email</div>
+              {email ? (
+                <div className="text-sm text-white font-mono">{email}</div>
+              ) : (
+                <>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); setEmailError(""); }}
+                    placeholder="you@example.com"
+                    className="w-full bg-transparent text-sm text-white font-mono placeholder-gray-500 outline-none border-none"
+                  />
+                  {emailError && (
+                    <p className="text-xs text-krud-red mt-1.5">{emailError}</p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
 
           {/* Permissions Box */}
           {authState === "default" && (
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              className="bg-[#090b0a] border border-[#ffffff0a] rounded-xl p-5 mb-6"
-            >
-              <div className="text-xs text-gray-400 uppercase tracking-wider mb-3 font-medium">
-                What we need to make the magic happen:
-              </div>
+            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="bg-[#090b0a] border border-[#ffffff0a] rounded-xl p-5 mb-6">
+              <div className="text-xs text-gray-400 uppercase tracking-wider mb-3 font-medium">krud CLI is requesting:</div>
               <div className="space-y-2.5">
-                {[
-                  "Access to your krud AI account",
-                  "Ability to send messages on your behalf",
-                  "View your usage and billing info",
-                ].map((permission, i) => (
-                  <motion.div
-                    key={permission}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 * (i + 1) }}
-                    className="flex items-center gap-2.5 text-sm text-white/80"
-                  >
+                {["Access to your krud AI account", "Ability to send messages on your behalf", "View your usage and billing info"].map((permission, i) => (
+                  <motion.div key={permission} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 * (i + 1) }} className="flex items-center gap-2.5 text-sm text-white/80">
                     <CheckCircle2 className="w-4 h-4 text-gray-200 shrink-0" />
                     {permission}
                   </motion.div>
@@ -381,76 +291,46 @@ export default function CliAuthPage({
             </motion.div>
           )}
 
-          {/* Success State — Terminal Command */}
+          {/* Success State */}
           {authState === "success" && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-[#090b0a] border border-krud-green/20 rounded-xl p-5 mb-6"
-            >
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[#090b0a] border border-krud-green/20 rounded-xl p-5 mb-6">
               <div className="flex items-center gap-2 text-krud-green mb-3">
                 <ShieldCheck className="w-4 h-4" />
-                <span className="text-xs font-medium uppercase tracking-wider">
-                  Connection Established
-                </span>
+                <span className="text-xs font-medium uppercase tracking-wider">Connection Established</span>
               </div>
-              <p className="text-sm text-gray-400">
-                Return to your terminal. Your session is now authenticated.
-              </p>
+              <p className="text-sm text-gray-400">Return to your terminal. Your session is now authenticated.</p>
             </motion.div>
           )}
 
           {/* Denied State */}
           {authState === "denied" && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-[#090b0a] border border-krud-red/20 rounded-xl p-5 mb-6"
-            >
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[#090b0a] border border-krud-red/20 rounded-xl p-5 mb-6">
               <div className="flex items-center gap-2 text-krud-red mb-3">
                 <XCircle className="w-4 h-4" />
-                <span className="text-xs font-medium uppercase tracking-wider">
-                  Access Denied
-                </span>
+                <span className="text-xs font-medium uppercase tracking-wider">Access Denied</span>
               </div>
               <div className="bg-black/40 rounded-lg p-3 font-mono text-xs text-gray-400">
-                <span className="text-gray-400/60">$</span>{" "}
-                <span className="text-white">krud login</span>
+                <span className="text-gray-400/60">$ </span><span className="text-white">krud login</span>
               </div>
             </motion.div>
           )}
 
           {/* Expired State */}
           {authState === "expired" && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-[#090b0a] border border-krud-yellow/20 rounded-xl p-5 mb-6"
-            >
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[#090b0a] border border-krud-yellow/20 rounded-xl p-5 mb-6">
               <div className="flex items-center gap-2 text-krud-yellow mb-3">
                 <AlertTriangle className="w-4 h-4" />
-                <span className="text-xs font-medium uppercase tracking-wider">
-                  Code Expired
-                </span>
+                <span className="text-xs font-medium uppercase tracking-wider">Code Expired</span>
               </div>
               <div className="bg-black/40 rounded-lg p-3 font-mono text-xs text-gray-400">
-                <span className="text-gray-400/60">$</span>{" "}
-                <span className="text-white">krud login</span>
+                <span className="text-gray-400/60">$ </span><span className="text-white">krud login</span>
               </div>
             </motion.div>
           )}
 
           {/* Buttons */}
           {authState === "default" && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="flex gap-3 mb-6"
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="flex gap-3 mb-6">
               <button
                 id="approve-access-btn"
                 onClick={handleApprove}
@@ -471,27 +351,15 @@ export default function CliAuthPage({
           )}
 
           {/* Footer Info */}
-          <div className="text-center">
-            {authState === "default" && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="space-y-1"
-              >
-                <p className="text-xs text-gray-400 flex items-center justify-center gap-1.5">
-                  <Clock className="w-3 h-3" />
-                  This code expires in{" "}
-                  <span className="font-mono text-gray-400">
-                    {formatTime(timeLeft)}
-                  </span>
-                </p>
-                <p className="text-xs text-gray-400/60">
-                  After approval, return to your terminal
-                </p>
-              </motion.div>
-            )}
-          </div>
+          {authState === "default" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-center space-y-1">
+              <p className="text-xs text-gray-400 flex items-center justify-center gap-1.5">
+                <Clock className="w-3 h-3" />
+                This code expires in <span className="font-mono text-gray-400">{formatTime(timeLeft)}</span>
+              </p>
+              <p className="text-xs text-gray-400/60">After approval, return to your terminal</p>
+            </motion.div>
+          )}
         </motion.div>
       </main>
     </div>

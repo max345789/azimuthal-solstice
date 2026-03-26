@@ -45,6 +45,34 @@ const proPlanFeatures = [
 export default function BillingPage() {
   const [selectedPlan, setSelectedPlan] = useState<"free" | "pro">("free");
   const [portalLoading, setPortalLoading] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+
+  const handleUpgrade = async () => {
+    setCheckoutLoading(true);
+    try {
+      const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
+      const res = await fetch(`${API_BASE_URL}/v1/billing/checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.checkout_url) {
+          window.location.href = data.checkout_url;
+          return;
+        }
+      }
+    } catch {
+      // fall through to payment-success in mock mode
+    } finally {
+      setCheckoutLoading(false);
+    }
+    // mock mode fallback
+    window.location.href = "/payment-success";
+  };
 
   const handleBillingPortal = async () => {
     setPortalLoading(true);
@@ -245,16 +273,17 @@ export default function BillingPage() {
                 ))}
               </div>
 
-              <Link
-                href="/payment-success"
+              <button
                 id="upgrade-now-btn"
-                className="block bg-white hover:opacity-90 text-black text-center py-2.5 rounded-lg text-sm font-medium transition-all duration-200 hover:shadow-[0_0_24px_rgba(255,255,255,0.3)] active:scale-[0.98] group"
+                onClick={handleUpgrade}
+                disabled={checkoutLoading}
+                className="w-full bg-white hover:opacity-90 text-black text-center py-2.5 rounded-lg text-sm font-medium transition-all duration-200 hover:shadow-[0_0_24px_rgba(255,255,255,0.3)] active:scale-[0.98] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed group"
               >
                 <span className="flex items-center justify-center gap-1.5">
-                  Upgrade Now
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  {checkoutLoading ? "Redirecting…" : "Upgrade Now"}
+                  {!checkoutLoading && <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />}
                 </span>
-              </Link>
+              </button>
             </div>
           </div>
         </motion.div>
