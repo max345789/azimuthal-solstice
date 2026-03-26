@@ -65,18 +65,18 @@ export function ProblemSolution() {
             </div>
 
             <h3 className="text-3xl font-semibold text-white mb-8 relative z-10 w-full">
-              The Krud AI <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-transparent">approach.</span>
+              The Krud AI CLI agent <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-transparent">approach.</span>
             </h3>
-            
+
             <ul className="space-y-6 text-white text-lg font-medium relative z-10">
               <li className="flex items-start gap-4">
-                <span className="text-white font-bold tracking-widest mt-1">/</span> Define your goal in natural prose
+                <span className="text-white font-bold tracking-widest mt-1">/</span> Tell the CLI agent your goal in plain language
               </li>
               <li className="flex items-start gap-4">
-                <span className="text-white font-bold tracking-widest mt-1">/</span> The agent intuits the required foundation
+                <span className="text-white font-bold tracking-widest mt-1">/</span> The agent runs commands and builds autonomously
               </li>
               <li className="flex items-start gap-4">
-                <span className="text-white font-bold tracking-widest mt-1">/</span> Fluidly iterate on the live result
+                <span className="text-white font-bold tracking-widest mt-1">/</span> Iterate and deploy — all from the terminal
               </li>
             </ul>
           </motion.div>

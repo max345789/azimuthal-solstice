@@ -46,10 +46,10 @@ export function Features() {
             Automated Architecture
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-            Tools carved for <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">precision.</span>
+            CLI agent tools carved for <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">precision.</span>
           </h2>
           <p className="text-gray-400 text-lg md:text-xl font-medium max-w-2xl">
-            We replaced rigid commands with intuitive creation. Step into an engine where tooling executes smoothly on autopilot.
+            Krud replaces rigid manual commands with an intelligent CLI agent. Step into an engine where your terminal executes autonomously on autopilot.
           </p>
         </div>
 

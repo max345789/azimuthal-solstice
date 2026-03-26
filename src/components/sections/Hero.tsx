@@ -45,11 +45,11 @@ export function Hero() {
           </div>
 
           <h1 className="text-6xl sm:text-7xl lg:text-9xl font-bold tracking-tight text-white mb-6 leading-[1.1] max-w-6xl mx-auto drop-shadow-sm">
-            One-click for Autonomous <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-transparent">Execution</span>
+            The AI CLI Agent for Autonomous <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-transparent">Execution</span>
           </h1>
-          
+
           <p className="text-lg sm:text-xl text-gray-400 mb-12 max-w-3xl mx-auto font-medium tracking-wide">
-            Dive into the terminal workflows, where innovative AI technology meets autonomous expertise and pure logic structure.
+            Krud AI is an autonomous CLI agent that lives in your terminal. Run commands, fix bugs, and ship code faster — no browser, no context switching.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">

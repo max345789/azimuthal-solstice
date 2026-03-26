@@ -22,7 +22,7 @@ export function HowItWorks() {
             Automated Logic
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
-            A Journey of <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">Creation</span>
+            How the CLI agent <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">works</span>
           </h2>
         </motion.div>
 
