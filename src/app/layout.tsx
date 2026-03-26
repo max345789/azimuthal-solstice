@@ -82,6 +82,15 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Krud AI",
+  url: "https://dabcloud.in",
+  description: "Krud AI builds autonomous CLI agents for developers",
+  sameAs: ["https://github.com/max345789/krud-ai"],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -90,6 +99,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark h-full">
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased min-h-full flex flex-col bg-[#050505] text-white selection:bg-white/20`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <div className="relative z-10 flex flex-col flex-1 pb-10">
           {children}
         </div>
