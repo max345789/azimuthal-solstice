@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { API_BASE_URL } from "@/lib/config";
 import Link from "next/link";
 import {
@@ -42,10 +42,25 @@ const proPlanFeatures = [
   { icon: Clock, text: "Faster response time" },
 ];
 
+interface TokenUsage { used: number; limit: number; resets_at: string; }
+interface Subscription { status: string; trial_ends_at: string; }
+
 export default function BillingPage() {
   const [selectedPlan, setSelectedPlan] = useState<"free" | "pro">("free");
   const [portalLoading, setPortalLoading] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [tokenUsage, setTokenUsage] = useState<TokenUsage | null>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
+
+  useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
+    if (!token) return;
+    const headers = { Authorization: `Bearer ${token}` };
+    fetch(`${API_BASE_URL}/v1/account/token-usage`, { headers })
+      .then(r => r.ok ? r.json() : null).then(d => { if (d) setTokenUsage(d); }).catch(() => {});
+    fetch(`${API_BASE_URL}/v1/account/subscription`, { headers })
+      .then(r => r.ok ? r.json() : null).then(d => { if (d) setSubscription(d); }).catch(() => {});
+  }, []);
 
   const handleUpgrade = async () => {
     setCheckoutLoading(true);
@@ -95,9 +110,14 @@ export default function BillingPage() {
       setPortalLoading(false);
     }
   };
-  const tokensUsed = 12400;
-  const tokensTotal = 40000;
-  const tokenPercentage = (tokensUsed / tokensTotal) * 100;
+  const tokensUsed = tokenUsage?.used ?? 0;
+  const tokensTotal = tokenUsage?.limit ?? 40000;
+  const tokenPercentage = Math.min((tokensUsed / tokensTotal) * 100, 100);
+
+  const subStatus = subscription?.status ?? "trialing";
+  const isActive = subStatus === "active";
+  const trialEndsAt = subscription?.trial_ends_at ? new Date(subscription.trial_ends_at) : null;
+  const trialDaysLeft = trialEndsAt ? Math.max(0, Math.ceil((trialEndsAt.getTime() - Date.now()) / 86400000)) : null;
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
@@ -149,20 +169,24 @@ export default function BillingPage() {
                 </div>
                 <div>
                   <div className="font-semibold text-white flex items-center gap-2">
-                    Trialing
+                    {isActive ? "Pro" : "Free Trial"}
                     <span className="text-[10px] bg-white/10 text-white px-2 py-0.5 rounded-full font-medium uppercase tracking-wider">
-                      Active
+                      {subStatus}
                     </span>
                   </div>
                   <p className="text-xs text-gray-400 mt-0.5">
-                    40,000 tokens per 5-hour window
+                    {tokensTotal.toLocaleString()} tokens per 5-hour window
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-sm text-krud-yellow">
-                <Clock className="w-4 h-4" />
-                <span className="font-medium">Expires in 7 days</span>
-              </div>
+              {!isActive && trialDaysLeft !== null && (
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <Clock className="w-4 h-4" />
+                  <span className="font-medium">
+                    {trialDaysLeft > 0 ? `Trial ends in ${trialDaysLeft} day${trialDaysLeft !== 1 ? "s" : ""}` : "Trial ended"}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Token Bar */}
