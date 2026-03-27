@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Terminal, Clock, Zap, ChevronRight, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "@/lib/config";
 
 function DiamondIcon({ className }: { className?: string }) {
   return (
@@ -12,16 +14,41 @@ function DiamondIcon({ className }: { className?: string }) {
   );
 }
 
-const sessions = [
-  { id: 1, title: "Refactor auth middleware", time: "2h ago", tokens: 3420, status: "completed" },
-  { id: 2, title: "Debug payment webhook", time: "1d ago", tokens: 8100, status: "completed" },
-  { id: 3, title: "Add rate limiting to API", time: "2d ago", tokens: 1850, status: "completed" },
-  { id: 4, title: "Setup CI/CD pipeline", time: "3d ago", tokens: 5200, status: "completed" },
-  { id: 5, title: "Fix Supabase SSL connection", time: "4d ago", tokens: 2300, status: "completed" },
-  { id: 6, title: "Scaffold FastAPI service", time: "5d ago", tokens: 6700, status: "completed" },
-];
+interface Session {
+  session_id: string;
+  title: string;
+  created_at: string;
+  message_count: number;
+  tokens_used: number;
+}
+
+function timeAgo(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days}d ago`;
+}
 
 export default function SessionsPage() {
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
+    if (!token) { setLoading(false); return; }
+
+    fetch(`${API_BASE_URL}/v1/chat/sessions`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data?.sessions) setSessions(data.sessions); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div className="min-h-screen bg-transparent">
       <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-screen overflow-hidden fixed z-0">
@@ -48,16 +75,24 @@ export default function SessionsPage() {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10">
         <div className="mb-8">
           <h1 className="text-xl font-semibold text-white mb-1">All Sessions</h1>
-          <p className="text-sm text-gray-400">Your recent krud chat sessions</p>
+          <p className="text-sm text-gray-400">
+            {loading ? "Loading…" : `${sessions.length} session${sessions.length !== 1 ? "s" : ""}`}
+          </p>
         </div>
 
         <div className="bg-[#0d1110] border border-[#ffffff0a] rounded-2xl overflow-hidden divide-y divide-white/5">
-          {sessions.map((session, i) => (
+          {loading ? (
+            <div className="px-5 py-10 text-center text-sm text-gray-500">Loading sessions…</div>
+          ) : sessions.length === 0 ? (
+            <div className="px-5 py-10 text-center text-sm text-gray-500">
+              No sessions yet. Run <code className="font-mono text-gray-300">krud chat</code> in your terminal to start.
+            </div>
+          ) : sessions.map((session, i) => (
             <motion.div
-              key={session.id}
+              key={session.session_id}
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.05 * i }}
+              transition={{ delay: 0.04 * i }}
               className="flex items-center justify-between px-5 py-4 hover:bg-white/[0.02] transition-colors group cursor-pointer"
             >
               <div className="flex items-center gap-3 min-w-0">
@@ -68,10 +103,16 @@ export default function SessionsPage() {
                   <div className="text-sm text-white truncate font-medium">{session.title}</div>
                   <div className="text-xs text-gray-400 flex items-center gap-2 mt-0.5">
                     <Clock className="w-3 h-3" />
-                    <span>{session.time}</span>
+                    <span>{timeAgo(session.created_at)}</span>
                     <span className="text-white/10">·</span>
                     <Zap className="w-3 h-3" />
-                    <span className="font-mono">{session.tokens.toLocaleString()} tokens</span>
+                    <span className="font-mono">{session.tokens_used.toLocaleString()} tokens</span>
+                    {session.message_count > 0 && (
+                      <>
+                        <span className="text-white/10">·</span>
+                        <span>{session.message_count} msgs</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

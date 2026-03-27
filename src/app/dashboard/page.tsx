@@ -45,13 +45,6 @@ const externalLinks = [
   { icon: GitBranch, label: "GitHub", href: "https://github.com/max345789/krud-ai" },
 ];
 
-const mockSessions = [
-  { id: 1, title: "Refactor auth middleware", time: "2h ago", tokens: 3420 },
-  { id: 2, title: "Debug payment webhook", time: "1d ago", tokens: 8100 },
-  { id: 3, title: "Add rate limiting to API", time: "2d ago", tokens: 1850 },
-  { id: 4, title: "Setup CI/CD pipeline", time: "3d ago", tokens: 5200 },
-];
-
 interface AccountData {
   email: string;
   name: string | null;
@@ -59,11 +52,32 @@ interface AccountData {
 }
 
 interface BillingData {
-  subscription: {
-    status: string;
-    trial_ends_at: string;
-  };
+  subscription: { status: string; trial_ends_at: string; };
   usage_events: number;
+}
+
+interface TokenUsage {
+  used: number;
+  limit: number;
+  resets_at: string | null;
+}
+
+interface Session {
+  session_id: string;
+  title: string;
+  created_at: string;
+  message_count: number;
+  tokens_used: number;
+}
+
+function timeAgo(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days}d ago`;
 }
 
 export default function DashboardPage() {
@@ -72,11 +86,13 @@ export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [account, setAccount] = useState<AccountData | null>(null);
   const [billing, setBilling] = useState<BillingData | null>(null);
+  const [tokenUsage, setTokenUsage] = useState<TokenUsage | null>(null);
+  const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const tokensUsed = 12400;
-  const tokensTotal = 40000;
-  const tokenPercentage = (tokensUsed / tokensTotal) * 100;
+  const tokensUsed = tokenUsage?.used ?? 0;
+  const tokensTotal = tokenUsage?.limit ?? 40000;
+  const tokenPercentage = tokensTotal > 0 ? Math.min(100, (tokensUsed / tokensTotal) * 100) : 0;
 
   useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
@@ -86,9 +102,13 @@ export default function DashboardPage() {
     Promise.all([
       fetch(`${API_BASE_URL}/v1/account/me`, { headers }).then(r => r.ok ? r.json() : null),
       fetch(`${API_BASE_URL}/v1/billing`, { headers }).then(r => r.ok ? r.json() : null),
-    ]).then(([acc, bill]) => {
+      fetch(`${API_BASE_URL}/v1/account/token-usage`, { headers }).then(r => r.ok ? r.json() : null),
+      fetch(`${API_BASE_URL}/v1/chat/sessions`, { headers }).then(r => r.ok ? r.json() : null),
+    ]).then(([acc, bill, tokens, sess]) => {
       if (acc) setAccount(acc);
       if (bill) setBilling(bill);
+      if (tokens) setTokenUsage(tokens);
+      if (sess?.sessions) setSessions(sess.sessions.slice(0, 4));
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
@@ -222,7 +242,10 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between">
                 <span className="text-xs text-gray-400">{Math.round(tokenPercentage)}% used</span>
                 <span className="text-xs text-gray-400 flex items-center gap-1">
-                  <Clock className="w-3 h-3" /> Resets in 5h window
+                  <Clock className="w-3 h-3" />
+                  {tokenUsage?.resets_at
+                    ? `Resets ${timeAgo(tokenUsage.resets_at).replace(" ago", "")}`
+                    : "5h window"}
                 </span>
               </div>
             </motion.div>
@@ -255,8 +278,12 @@ export default function DashboardPage() {
               <Link href="/dashboard/sessions" className="text-xs text-gray-400 hover:text-gray-200 transition-colors">View all →</Link>
             </div>
             <div className="bg-[#0d1110] border border-[#ffffff0a] rounded-2xl overflow-hidden divide-y divide-white/5">
-              {mockSessions.map((session, i) => (
-                <motion.div key={session.id} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 * (i + 1) + 0.2 }} className="flex items-center justify-between px-5 py-4 hover:bg-white/[0.02] transition-colors group cursor-pointer">
+              {loading ? (
+                <div className="px-5 py-8 text-center text-sm text-gray-500">Loading sessions…</div>
+              ) : sessions.length === 0 ? (
+                <div className="px-5 py-8 text-center text-sm text-gray-500">No sessions yet. Start chatting in the CLI.</div>
+              ) : sessions.map((session, i) => (
+                <motion.div key={session.session_id} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 * (i + 1) + 0.2 }} className="flex items-center justify-between px-5 py-4 hover:bg-white/[0.02] transition-colors group cursor-pointer">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
                       <Terminal className="w-4 h-4 text-gray-200" />
@@ -264,9 +291,9 @@ export default function DashboardPage() {
                     <div className="min-w-0">
                       <div className="text-sm text-white truncate font-medium">{session.title}</div>
                       <div className="text-xs text-gray-400 flex items-center gap-2 mt-0.5">
-                        <span>{session.time}</span>
+                        <span>{timeAgo(session.created_at)}</span>
                         <span className="text-white/10">·</span>
-                        <span className="font-mono">{session.tokens.toLocaleString()} tokens</span>
+                        <span className="font-mono">{session.tokens_used.toLocaleString()} tokens</span>
                       </div>
                     </div>
                   </div>
