@@ -60,7 +60,7 @@ export default function NotFound() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-          className="font-mono text-8xl md:text-9xl font-bold text-gray-200 mb-4 tracking-tighter"
+          className="font-mono text-6xl sm:text-8xl md:text-9xl font-bold text-gray-200 mb-4 tracking-tighter"
         >
           404
         </motion.h1>
@@ -86,7 +86,7 @@ export default function NotFound() {
             <div className="w-2.5 h-2.5 rounded-full bg-krud-red/60" />
             <div className="w-2.5 h-2.5 rounded-full bg-krud-yellow/60" />
             <div className="w-2.5 h-2.5 rounded-full bg-krud-green/60" />
-            <span className="text-[10px] text-gray-400/50 font-mono ml-2">
+            <span className="text-xs text-gray-400/50 font-mono ml-2">
               krud — zsh
             </span>
           </div>

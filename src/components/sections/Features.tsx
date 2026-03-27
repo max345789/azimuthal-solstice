@@ -45,7 +45,7 @@ export function Features() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1c1c1c] border border-white/5 text-xs font-semibold text-gray-300 mb-6 tracking-wide">
             Automated Architecture
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
             CLI agent tools carved for <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">precision.</span>
           </h2>
           <p className="text-gray-400 text-lg md:text-xl font-medium max-w-2xl">
@@ -61,14 +61,14 @@ export function Features() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: idx * 0.1, duration: 0.6 }}
               key={feature.name}
-              className="group p-10 border border-white/5 bg-[#0a0c0b] rounded-[32px] hover:bg-[#0d1110] transition-colors relative overflow-hidden"
+              className="group p-6 sm:p-8 lg:p-10 border border-white/5 bg-[#0a0c0b] rounded-[24px] sm:rounded-[32px] hover:bg-[#0d1110] transition-colors relative overflow-hidden"
             >
               <div className="absolute top-[-50%] right-[-50%] w-[100%] h-[100%] bg-gradient-to-bl from-[#1a2d2a]/20 to-transparent blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               
               <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-transparent backdrop-blur-sm mb-8 relative z-10 group-hover:scale-110 transition-transform duration-500">
                 <feature.icon className="w-5 h-5 text-gray-200" />
               </div>
-              <h3 className="text-2xl font-semibold text-white mb-4 tracking-tight relative z-10">{feature.name}</h3>
+              <h3 className="text-xl sm:text-2xl font-semibold text-white mb-3 sm:mb-4 tracking-tight relative z-10">{feature.name}</h3>
               <p className="text-base text-gray-400 leading-relaxed font-medium relative z-10">
                 {feature.description}
               </p>

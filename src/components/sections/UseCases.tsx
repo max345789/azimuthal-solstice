@@ -29,7 +29,7 @@ export function UseCases() {
           className="mb-24 flex flex-col md:flex-row md:items-end md:justify-between gap-12"
         >
           <div className="flex-1">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               Agents across <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">paradigms.</span>
             </h2>
             <p className="text-gray-400 text-xl font-medium max-w-lg">
@@ -51,7 +51,7 @@ export function UseCases() {
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1, duration: 0.6 }}
-              className="group p-10 border border-white/5 rounded-[32px] hover:bg-[#0a0c0b] hover:border-white/10 transition-all flex flex-col justify-between min-h-[300px] bg-transparent"
+              className="group p-10 border border-white/5 rounded-[24px] sm:rounded-[32px] hover:bg-[#0a0c0b] hover:border-white/10 transition-all flex flex-col justify-between min-h-[220px] sm:min-h-[300px] bg-transparent"
             >
               <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center mb-16 relative">
                  <div className="w-2 h-2 rounded-full bg-gray-500 group-hover:bg-white transition-colors" />

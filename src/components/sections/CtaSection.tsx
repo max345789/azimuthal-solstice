@@ -23,7 +23,7 @@ export function CtaSection() {
           className="relative z-10 max-w-4xl flex flex-col items-center"
         >
           
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-8">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-8">
             Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-transparent">Defend?</span>
           </h2>
           <p className="text-xl text-gray-400 mb-12 max-w-2xl font-medium leading-relaxed">

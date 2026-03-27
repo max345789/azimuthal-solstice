@@ -16,10 +16,10 @@ export function Hero() {
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   return (
-    <section ref={containerRef} className="pt-24 pb-10 px-4 w-full flex flex-col items-center">
-      
+    <section ref={containerRef} className="pt-20 sm:pt-24 pb-10 px-4 w-full flex flex-col items-center">
+
       {/* Massive Glowing Card */}
-      <div className="w-full max-w-[95%] mx-auto bg-[#0d1110] rounded-[48px] border border-white/5 relative overflow-hidden min-h-[85vh] flex flex-col items-center justify-center text-center shadow-2xl">
+      <div className="w-full max-w-[95%] mx-auto bg-[#0d1110] rounded-[32px] sm:rounded-[48px] border border-white/5 relative overflow-hidden min-h-[70vh] sm:min-h-[85vh] flex flex-col items-center justify-center text-center shadow-2xl">
         
         {/* Organic Flowing Gradients (Blob meshes) */}
         <div className="absolute inset-0 pointer-events-none opacity-50 mix-blend-screen overflow-hidden">
@@ -32,10 +32,10 @@ export function Hero() {
         </div>
 
         {/* Content */}
-        <motion.div style={{ y: contentY }} className="relative z-10 w-full px-6 flex flex-col items-center">
+        <motion.div style={{ y: contentY }} className="relative z-10 w-full px-4 sm:px-6 flex flex-col items-center">
           
           {/* Play Button Icon */}
-          <div className="w-14 h-14 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center mb-16 shadow-[0_0_30px_rgba(255,255,255,0.05)] cursor-pointer hover:bg-white/10 transition-colors">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center mb-10 sm:mb-16 shadow-[0_0_30px_rgba(255,255,255,0.05)] cursor-pointer hover:bg-white/10 transition-colors">
             <Play className="w-5 h-5 text-gray-300 ml-1" fill="currentColor" />
           </div>
 
@@ -44,11 +44,11 @@ export function Hero() {
             Unlock Your Terminal Spark! <ArrowRight className="w-3.5 h-3.5 ml-1" />
           </div>
 
-          <h1 className="text-6xl sm:text-7xl lg:text-9xl font-bold tracking-tight text-white mb-6 leading-[1.1] max-w-6xl mx-auto drop-shadow-sm">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-bold tracking-tight text-white mb-4 sm:mb-6 leading-[1.15] max-w-6xl mx-auto drop-shadow-sm px-2">
             The AI CLI Agent for Autonomous <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-transparent">Execution</span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-gray-400 mb-12 max-w-3xl mx-auto font-medium tracking-wide">
+          <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-8 sm:mb-12 max-w-3xl mx-auto font-medium tracking-wide px-2">
             Krud AI is an autonomous CLI agent that lives in your terminal. Run commands, fix bugs, and ship code faster — no browser, no context switching.
           </p>
 
@@ -135,14 +135,14 @@ export function Hero() {
         </div>
 
         {/* Bottom Bar Indicators */}
-        <div className="absolute bottom-10 left-10 flex items-center gap-4 z-10 bg-white/5 backdrop-blur-md rounded-full pl-2 pr-4 py-2 border border-white/5">
-          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg">
-            <ArrowDown className="w-4 h-4 text-black" />
+        <div className="absolute bottom-6 sm:bottom-10 left-4 sm:left-10 flex items-center gap-3 sm:gap-4 z-10 bg-white/5 backdrop-blur-md rounded-full pl-2 pr-3 sm:pr-4 py-2 border border-white/5">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center shadow-lg">
+            <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4 text-black" />
           </div>
-          <span className="text-xs text-gray-400 font-medium tracking-wide">02/03 . Scroll down</span>
+          <span className="text-xs text-gray-400 font-medium tracking-wide">Scroll down</span>
         </div>
 
-        <div className="absolute bottom-10 right-10 flex flex-col items-end z-10">
+        <div className="absolute bottom-6 sm:bottom-10 right-4 sm:right-10 hidden sm:flex flex-col items-end z-10">
           <span className="text-sm font-medium text-[#c4cbb8] mb-3">AI horizons</span>
           <div className="flex gap-2">
             <div className="w-8 h-1 bg-white" />
@@ -154,13 +154,13 @@ export function Hero() {
       </div>
 
       {/* Integrated Logos Bar Section Right Below */}
-      <div className="w-full max-w-[95%] lg:max-w-5xl mx-auto flex items-center justify-between opacity-50 py-10 mt-2 filter brightness-100 grayscale-[0.8]">
-        <div className="flex items-center gap-2"><span className="font-bold text-xl tracking-tighter">▲ Vercel</span></div>
-        <div className="flex items-center gap-2"><span className="font-bold text-xl tracking-tighter">loom</span></div>
-        <div className="flex items-center gap-2"><span className="font-bold text-xl tracking-tighter">$ Cash App</span></div>
-        <div className="flex items-center gap-2"><span className="font-bold text-xl tracking-tighter">◎ Loops</span></div>
-        <div className="flex items-center gap-2"><span className="font-bold text-xl tracking-tighter">_zapier</span></div>
-        <div className="flex items-center gap-2"><span className="font-bold text-xl tracking-tighter">ramp ⊿</span></div>
+      <div className="w-full max-w-[95%] lg:max-w-5xl mx-auto flex items-center justify-between flex-wrap gap-4 sm:gap-0 opacity-50 py-8 sm:py-10 mt-2 filter brightness-100 grayscale-[0.8]">
+        <div className="flex items-center gap-2"><span className="font-bold text-base sm:text-xl tracking-tighter">▲ Vercel</span></div>
+        <div className="flex items-center gap-2"><span className="font-bold text-base sm:text-xl tracking-tighter">loom</span></div>
+        <div className="flex items-center gap-2"><span className="font-bold text-base sm:text-xl tracking-tighter">$ Cash App</span></div>
+        <div className="flex items-center gap-2"><span className="font-bold text-base sm:text-xl tracking-tighter">◎ Loops</span></div>
+        <div className="flex items-center gap-2"><span className="font-bold text-base sm:text-xl tracking-tighter">_zapier</span></div>
+        <div className="flex items-center gap-2"><span className="font-bold text-base sm:text-xl tracking-tighter">ramp ⊿</span></div>
       </div>
       
     </section>

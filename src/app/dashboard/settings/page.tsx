@@ -83,7 +83,7 @@ export default function SettingsPage() {
       </div>
 
       <header className="w-full border-b border-[#ffffff0a] bg-transparent/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2">
               <DiamondIcon className="w-4 h-4 text-gray-200" />
@@ -98,7 +98,7 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-10 relative z-10 space-y-6">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10 space-y-6">
         {sections.map((section, i) => (
           <motion.div
             key={section.title}

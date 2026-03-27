@@ -122,7 +122,7 @@ export default function CliAuthPage({
       </div>
 
       <header className="w-full border-b border-[#ffffff0a] bg-transparent/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
             <DiamondIcon className="w-4 h-4 text-gray-200" />
             <span className="font-semibold text-white text-sm tracking-tight">krud AI</span>

@@ -88,12 +88,12 @@ export default function BlogPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }}
       />
-      <div className="max-w-4xl mx-auto px-6 py-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
         <div className="mb-12">
           <p className="text-sm font-mono text-[#a07850] uppercase tracking-widest mb-3">
             Blog
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
             Krud AI Blog
           </h1>
           <p className="text-lg text-gray-400 max-w-2xl">

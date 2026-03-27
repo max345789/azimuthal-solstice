@@ -31,7 +31,7 @@ export function SocialProof() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((t, idx) => (
-            <div key={idx} className="flex flex-col gap-6 p-10 border border-white/5 bg-[#0a0c0b] rounded-[32px] hover:border-white/10 transition-colors">
+            <div key={idx} className="flex flex-col gap-6 p-10 border border-white/5 bg-[#0a0c0b] rounded-[24px] sm:rounded-[32px] hover:border-white/10 transition-colors">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 text-white fill-white" />

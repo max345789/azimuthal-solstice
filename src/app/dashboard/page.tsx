@@ -191,7 +191,7 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <main className="flex-1 min-w-0">
-        <div className="h-16 border-b border-[#ffffff0a] flex items-center px-6 lg:px-8">
+        <div className="h-16 border-b border-[#ffffff0a] flex items-center px-4 sm:px-6 lg:px-8">
           <div className="lg:hidden w-10" />
           <div>
             <h1 className="text-xl font-semibold text-[#fff1e0] tracking-tight">
@@ -201,7 +201,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="px-6 lg:px-8 py-8 max-w-5xl">
+        <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-5xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {/* Token Usage Card */}
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-[#0d1110] border-l-4 border-l-gray-300 border border-[#ffffff0a] rounded-2xl p-6">

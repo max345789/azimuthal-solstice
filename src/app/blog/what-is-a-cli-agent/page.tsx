@@ -58,7 +58,7 @@ export default function WhatIsCliAgentPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
-      <article className="max-w-3xl mx-auto px-6 py-16">
+      <article className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-gray-600 mb-10 font-mono">
           <Link href="/" className="hover:text-white transition-colors">
@@ -82,7 +82,7 @@ export default function WhatIsCliAgentPage() {
               March 26, 2026
             </time>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-5 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-5 leading-tight">
             What is a CLI Agent?
           </h1>
           <p className="text-xl text-gray-400 leading-relaxed">

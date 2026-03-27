@@ -21,7 +21,7 @@ export function HowItWorks() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1c1c1c] border border-white/5 text-xs font-semibold text-gray-300 mb-6 tracking-wide">
             Automated Logic
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
             How the CLI agent <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">works</span>
           </h2>
         </motion.div>
@@ -34,7 +34,7 @@ export function HowItWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, delay: idx * 0.2 }}
-              className="flex-1 p-10 border border-white/5 rounded-[32px] hover:border-white/10 transition-colors duration-500 bg-[#0a0c0b]"
+              className="flex-1 p-10 border border-white/5 rounded-[24px] sm:rounded-[32px] hover:border-white/10 transition-colors duration-500 bg-[#0a0c0b]"
             >
               <div className="flex items-center justify-between mb-12">
                 <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-transparent backdrop-blur-sm">

@@ -28,7 +28,7 @@ function Confetti() {
 
   useEffect(() => {
     const colors = ["#a855f7", "#d8b4fe", "#22c55e", "#818cf8", "#f472b6", "#fbbf24"];
-    const newPieces: ConfettiPiece[] = Array.from({ length: 50 }, (_, i) => ({
+    const newPieces: ConfettiPiece[] = Array.from({ length: 20 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 1,
@@ -126,7 +126,7 @@ export default function PaymentSuccessPage() {
       <Confetti />
 
       <header className="w-full border-b border-[#ffffff0a] bg-transparent/80 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <DiamondIcon className="w-4 h-4 text-gray-200" />
             <span className="font-semibold text-white text-sm tracking-tight">krud AI</span>
