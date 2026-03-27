@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" font-family="'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif">
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#050505"/>
+
+  <!-- Blob gradients -->
+  <defs>
+    <radialGradient id="g1" cx="80%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#1a2d2a" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#050505" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="10%" cy="70%" r="55%">
+      <stop offset="0%" stop-color="#16211e" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#050505" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g3" cx="60%" cy="90%" r="40%">
+      <stop offset="0%" stop-color="#192b31" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#050505" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g1)"/>
+  <rect width="1200" height="630" fill="url(#g2)"/>
+  <rect width="1200" height="630" fill="url(#g3)"/>
+
+  <!-- Subtle grid lines -->
+  <g stroke="#ffffff" stroke-opacity="0.03" stroke-width="1">
+    <line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="400" y1="0" x2="400" y2="630"/>
+    <line x1="800" y1="0" x2="800" y2="630"/>
+  </g>
+
+  <!-- Terminal window -->
+  <rect x="680" y="100" width="460" height="300" rx="16" fill="#0d1110" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1"/>
+  <!-- Terminal title bar -->
+  <rect x="680" y="100" width="460" height="36" rx="16" fill="#111714"/>
+  <rect x="680" y="116" width="460" height="20" fill="#111714"/>
+  <circle cx="708" cy="118" r="5" fill="#ff5f57" opacity="0.8"/>
+  <circle cx="726" cy="118" r="5" fill="#febc2e" opacity="0.8"/>
+  <circle cx="744" cy="118" r="5" fill="#28c840" opacity="0.8"/>
+  <text x="860" y="123" fill="#ffffff" font-size="11" opacity="0.3" text-anchor="middle" font-family="monospace">bash</text>
+
+  <!-- Terminal content -->
+  <text x="704" y="162" fill="#4ade80" font-size="13" font-family="monospace">$</text>
+  <text x="718" y="162" fill="#e2e8f0" font-size="13" font-family="monospace">krud chat</text>
+
+  <text x="704" y="192" fill="#6b7280" font-size="12" font-family="monospace">✦ krud v0.2.2 ready</text>
+
+  <text x="704" y="222" fill="#9ca3af" font-size="12" font-family="monospace">&gt;</text>
+  <text x="718" y="222" fill="#e2e8f0" font-size="12" font-family="monospace">deploy my app to production</text>
+
+  <text x="704" y="252" fill="#6b7280" font-size="11" font-family="monospace">  Running: git push heroku main</text>
+  <text x="704" y="272" fill="#6b7280" font-size="11" font-family="monospace">  Running: heroku ps:scale web=1</text>
+
+  <text x="704" y="302" fill="#4ade80" font-size="12" font-family="monospace">  ✓ Deployed successfully</text>
+
+  <!-- Cursor blink -->
+  <rect x="704" y="330" width="8" height="14" rx="1" fill="#ffffff" opacity="0.6"/>
+
+  <!-- Left content -->
+  <!-- Logo mark -->
+  <g transform="translate(80, 100)">
+    <path d="M20 0l7.5 20-7.5 20-7.5-20z" fill="#ffffff"/>
+  </g>
+
+  <!-- Product name -->
+  <text x="116" y="127" fill="#ffffff" font-size="32" font-weight="700" letter-spacing="-1">krud</text>
+  <text x="196" y="127" fill="#ffffff" font-size="32" font-weight="300" opacity="0.5">AI</text>
+
+  <!-- Main headline -->
+  <text x="80" y="220" fill="#ffffff" font-size="52" font-weight="700" letter-spacing="-2">Type what you</text>
+  <text x="80" y="284" fill="#ffffff" font-size="52" font-weight="700" letter-spacing="-2">want. Krud</text>
+  <text x="80" y="348" fill="#ffffff" font-size="52" font-weight="700" letter-spacing="-2" opacity="0.5">runs it.</text>
+
+  <!-- Subtext -->
+  <text x="80" y="408" fill="#9ca3af" font-size="18" font-weight="400">CLI tool that lives in your terminal.</text>
+  <text x="80" y="434" fill="#9ca3af" font-size="18" font-weight="400">Describe what you need — it runs it.</text>
+
+  <!-- Install badge -->
+  <rect x="80" y="468" width="340" height="42" rx="10" fill="#0d1110" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1"/>
+  <text x="100" y="494" fill="#4ade80" font-size="13" font-family="monospace">$</text>
+  <text x="116" y="494" fill="#e2e8f0" font-size="13" font-family="monospace">curl -fsSL install.krud.ai | sh</text>
+
+  <!-- Bottom domain -->
+  <text x="80" y="580" fill="#ffffff" font-size="14" opacity="0.2" letter-spacing="1">dabcloud.in</text>
+
+  <!-- Border frame -->
+  <rect x="1" y="1" width="1198" height="628" rx="0" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.05"/>
+
+</svg>

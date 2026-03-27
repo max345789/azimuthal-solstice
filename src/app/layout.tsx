@@ -48,6 +48,14 @@ export const metadata: Metadata = {
     description:
       "Describe what you need in plain English. Krud figures out the terminal commands, runs them, and tells you what happened.",
     locale: "en_US",
+    images: [
+      {
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Krud AI — Type what you want. Krud runs it.",
+      },
+    ],
   },
 
   twitter: {
@@ -56,6 +64,7 @@ export const metadata: Metadata = {
     description:
       "Describe what you need in plain English. Krud figures out the terminal commands, runs them, and tells you what happened.",
     creator: "@krudai",
+    images: [`${BASE_URL}/og-image.png`],
   },
 
   robots: {
