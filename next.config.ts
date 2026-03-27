@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
 };
 
 export default withSentryConfig(nextConfig, {
-  org: "krud-ai",
+  org: "flychivem-aq",
   project: "krud-frontend",
   silent: !process.env.CI,
   widenClientFileUpload: true,
