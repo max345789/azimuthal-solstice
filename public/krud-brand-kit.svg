@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif">
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#050505"/>
+
+  <!-- Header -->
+  <text x="80" y="68" fill="#ffffff" font-size="13" font-weight="500" letter-spacing="3" opacity="0.4">KRUD AI — BRAND KIT</text>
+  <line x1="80" y1="84" x2="1120" y2="84" stroke="#ffffff" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- ─────────────────────────────────────────── -->
+  <!-- SECTION 1: Primary Logo — Dark Background  -->
+  <!-- ─────────────────────────────────────────── -->
+  <rect x="80" y="110" width="500" height="280" rx="20" fill="#0d1110" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.08"/>
+  <text x="110" y="148" fill="#ffffff" font-size="10" font-weight="500" letter-spacing="2" opacity="0.3">PRIMARY — DARK</text>
+
+  <!-- Diamond icon -->
+  <g transform="translate(230, 195) scale(3.5)">
+    <path d="M8 0l3 8-3 8-3-8z" fill="#ffffff"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="287" y="228" fill="#ffffff" font-size="36" font-weight="700" letter-spacing="-1.5">krud</text>
+  <text x="379" y="228" fill="#ffffff" font-size="36" font-weight="300" letter-spacing="-0.5" opacity="0.6">AI</text>
+
+  <!-- Tagline -->
+  <text x="230" y="262" fill="#ffffff" font-size="12" font-weight="400" opacity="0.35" letter-spacing="0.3">Type what you want. Krud runs it.</text>
+
+  <!-- URL -->
+  <text x="230" y="358" fill="#ffffff" font-size="11" font-weight="400" opacity="0.25" letter-spacing="1" font-family="'JetBrains Mono', 'Courier New', monospace">dabcloud.in</text>
+
+  <!-- ──────────────────────────────────────────── -->
+  <!-- SECTION 2: Primary Logo — Light Background  -->
+  <!-- ──────────────────────────────────────────── -->
+  <rect x="620" y="110" width="500" height="280" rx="20" fill="#f5f5f0" stroke="#000000" stroke-width="0.5" stroke-opacity="0.06"/>
+  <text x="650" y="148" fill="#000000" font-size="10" font-weight="500" letter-spacing="2" opacity="0.3">PRIMARY — LIGHT</text>
+
+  <!-- Diamond icon dark -->
+  <g transform="translate(770, 195) scale(3.5)">
+    <path d="M8 0l3 8-3 8-3-8z" fill="#050505"/>
+  </g>
+
+  <!-- Wordmark dark -->
+  <text x="827" y="228" fill="#050505" font-size="36" font-weight="700" letter-spacing="-1.5">krud</text>
+  <text x="919" y="228" fill="#050505" font-size="36" font-weight="300" letter-spacing="-0.5" opacity="0.45">AI</text>
+
+  <!-- Tagline dark -->
+  <text x="770" y="262" fill="#050505" font-size="12" font-weight="400" opacity="0.35" letter-spacing="0.3">Type what you want. Krud runs it.</text>
+
+  <!-- URL dark -->
+  <text x="770" y="358" fill="#050505" font-size="11" font-weight="400" opacity="0.3" letter-spacing="1" font-family="'JetBrains Mono', 'Courier New', monospace">dabcloud.in</text>
+
+  <!-- ─────────────────────────────── -->
+  <!-- SECTION 3: Icon Only Variants  -->
+  <!-- ─────────────────────────────── -->
+  <text x="80" y="436" fill="#ffffff" font-size="10" font-weight="500" letter-spacing="2" opacity="0.3">ICON VARIANTS</text>
+
+  <!-- Icon — Large dark bg -->
+  <rect x="80" y="452" width="140" height="140" rx="32" fill="#0d1110" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.08"/>
+  <g transform="translate(136, 494) scale(4)">
+    <path d="M8 0l3 8-3 8-3-8z" fill="#ffffff"/>
+  </g>
+
+  <!-- Icon — Large white bg -->
+  <rect x="240" y="452" width="140" height="140" rx="32" fill="#ffffff"/>
+  <g transform="translate(296, 494) scale(4)">
+    <path d="M8 0l3 8-3 8-3-8z" fill="#050505"/>
+  </g>
+
+  <!-- Icon — Large mid bg -->
+  <rect x="400" y="452" width="140" height="140" rx="32" fill="#1c2e2a"/>
+  <g transform="translate(456, 494) scale(4)">
+    <path d="M8 0l3 8-3 8-3-8z" fill="#ffffff"/>
+  </g>
+
+  <!-- Icon — Small dark -->
+  <rect x="560" y="452" width="64" height="64" rx="14" fill="#0d1110" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1"/>
+  <g transform="translate(582, 468) scale(1.6)">
+    <path d="M8 0l3 8-3 8-3-8z" fill="#ffffff"/>
+  </g>
+
+  <!-- Icon — Small white -->
+  <rect x="560" y="532" width="64" height="64" rx="14" fill="#ffffff"/>
+  <g transform="translate(582, 548) scale(1.6)">
+    <path d="M8 0l3 8-3 8-3-8z" fill="#050505"/>
+  </g>
+
+  <!-- Size labels -->
+  <text x="137" y="612" fill="#ffffff" font-size="9" opacity="0.25" text-anchor="middle">512px</text>
+  <text x="310" y="612" fill="#ffffff" font-size="9" opacity="0.25" text-anchor="middle">512px</text>
+  <text x="470" y="612" fill="#ffffff" font-size="9" opacity="0.25" text-anchor="middle">512px</text>
+  <text x="592" y="612" fill="#ffffff" font-size="9" opacity="0.25" text-anchor="middle">64px</text>
+
+  <!-- ───────────────────────────── -->
+  <!-- SECTION 4: Wordmark Only     -->
+  <!-- ───────────────────────────── -->
+  <rect x="660" y="452" width="460" height="280" rx="20" fill="#0d1110" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.08"/>
+  <text x="690" y="490" fill="#ffffff" font-size="10" font-weight="500" letter-spacing="2" opacity="0.3">WORDMARK &amp; COLOURS</text>
+
+  <!-- Full wordmark large -->
+  <text x="700" y="558" fill="#ffffff" font-size="56" font-weight="700" letter-spacing="-2">krud</text>
+  <text x="853" y="558" fill="#ffffff" font-size="56" font-weight="300" letter-spacing="-1" opacity="0.5">AI</text>
+
+  <!-- Colour swatches -->
+  <rect x="700" y="580" width="40" height="40" rx="8" fill="#050505" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.2"/>
+  <text x="720" y="640" fill="#ffffff" font-size="9" opacity="0.4" text-anchor="middle" font-family="monospace">#050505</text>
+
+  <rect x="755" y="580" width="40" height="40" rx="8" fill="#0d1110"/>
+  <text x="775" y="640" fill="#ffffff" font-size="9" opacity="0.4" text-anchor="middle" font-family="monospace">#0d1110</text>
+
+  <rect x="810" y="580" width="40" height="40" rx="8" fill="#1c2e2a"/>
+  <text x="830" y="640" fill="#ffffff" font-size="9" opacity="0.4" text-anchor="middle" font-family="monospace">#1c2e2a</text>
+
+  <rect x="865" y="580" width="40" height="40" rx="8" fill="#ffffff"/>
+  <text x="885" y="640" fill="#ffffff" font-size="9" opacity="0.4" text-anchor="middle" font-family="monospace">#ffffff</text>
+
+  <rect x="920" y="580" width="40" height="40" rx="8" fill="#9ca3af"/>
+  <text x="940" y="640" fill="#ffffff" font-size="9" opacity="0.4" text-anchor="middle" font-family="monospace">#9ca3af</text>
+
+  <!-- Typography note -->
+  <text x="700" y="678" fill="#ffffff" font-size="11" opacity="0.3">Primary: Inter · Mono: JetBrains Mono</text>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- SECTION 5: Social Proof Logos Bar      -->
+  <!-- ─────────────────────────────────────── -->
+  <text x="80" y="670" fill="#ffffff" font-size="10" font-weight="500" letter-spacing="2" opacity="0.3">USED BY TEAMS AT</text>
+
+  <g opacity="0.45" fill="#ffffff">
+    <!-- Vercel -->
+    <g transform="translate(80, 682)">
+      <polygon points="10,0 20,18 0,18" fill="white"/>
+      <text x="26" y="15" font-size="16" font-weight="700" letter-spacing="-0.5">Vercel</text>
+    </g>
+    <!-- Loom -->
+    <g transform="translate(215, 682)">
+      <circle cx="8" cy="9" r="8" fill="none" stroke="white" stroke-width="2"/>
+      <circle cx="8" cy="9" r="3" fill="white"/>
+      <text x="22" y="15" font-size="16" font-weight="700" letter-spacing="-0.5">Loom</text>
+    </g>
+    <!-- Cash App -->
+    <g transform="translate(340, 682)">
+      <text x="0" y="15" font-size="16" font-weight="700" letter-spacing="-0.5">$ Cash App</text>
+    </g>
+    <!-- Loops -->
+    <g transform="translate(498, 682)">
+      <circle cx="9" cy="9" r="8" fill="none" stroke="white" stroke-width="2"/>
+      <circle cx="9" cy="9" r="2.5" fill="none" stroke="white" stroke-width="1.5"/>
+      <text x="24" y="15" font-size="16" font-weight="700" letter-spacing="-0.5">Loops</text>
+    </g>
+    <!-- Zapier -->
+    <g transform="translate(624, 682)">
+      <text x="0" y="15" font-size="16" font-weight="700" letter-spacing="-0.5">Zapier</text>
+    </g>
+    <!-- Ramp -->
+    <g transform="translate(746, 682)">
+      <text x="0" y="15" font-size="16" font-weight="700" letter-spacing="-0.5">Ramp</text>
+    </g>
+  </g>
+
+  <!-- Footer line -->
+  <line x1="80" y1="840" x2="1120" y2="840" stroke="#ffffff" stroke-width="0.5" opacity="0.06"/>
+  <text x="80" y="868" fill="#ffffff" font-size="10" opacity="0.2">© 2025 Krud AI · dabcloud.in · All rights reserved</text>
+  <text x="1120" y="868" fill="#ffffff" font-size="10" opacity="0.2" text-anchor="end">Vector — scalable to any size</text>
+
+</svg>

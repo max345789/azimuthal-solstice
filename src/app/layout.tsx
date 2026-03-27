@@ -18,22 +18,22 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
 
   title: {
-    default: "Krud AI — AI CLI Agent for Autonomous Terminal Execution",
+    default: "Krud AI — CLI tool that runs commands from plain English",
     template: "%s | Krud AI",
   },
   description:
-    "Krud AI is an AI CLI agent that lives in your terminal. Run commands, fix bugs, and ship code autonomously — no browser, no context switching. Install in one line.",
+    "Krud is a CLI tool that lives in your terminal. Describe what you need and it figures out the right commands, runs them, and shows you exactly what happened.",
   keywords: [
-    "CLI agent",
-    "AI CLI agent",
-    "autonomous CLI agent",
-    "terminal AI agent",
-    "AI terminal agent",
-    "command line AI agent",
-    "developer CLI agent",
+    "CLI tool",
+    "terminal tool",
+    "developer CLI",
+    "command line tool",
     "krud AI",
-    "AI coding assistant terminal",
-    "autonomous terminal agent",
+    "terminal productivity",
+    "CLI helper",
+    "developer tools",
+    "shell commands",
+    "terminal assistant",
   ],
   authors: [{ name: "Krud AI", url: BASE_URL }],
   creator: "Krud AI",
@@ -44,17 +44,17 @@ export const metadata: Metadata = {
     type: "website",
     url: BASE_URL,
     siteName: "Krud AI",
-    title: "Krud AI — Autonomous AI Terminal Agent",
+    title: "Krud AI — Type what you want. Krud runs it.",
     description:
-      "One-click autonomous workflows. Run commands, fix bugs, and ship code faster — right from your terminal.",
+      "Describe what you need in plain English. Krud figures out the terminal commands, runs them, and tells you what happened.",
     locale: "en_US",
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Krud AI — Autonomous AI Terminal Agent",
+    title: "Krud AI — Type what you want. Krud runs it.",
     description:
-      "One-click autonomous workflows. Run commands, fix bugs, and ship code faster — right from your terminal.",
+      "Describe what you need in plain English. Krud figures out the terminal commands, runs them, and tells you what happened.",
     creator: "@krudai",
   },
 
@@ -87,7 +87,7 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: "Krud AI",
   url: "https://dabcloud.in",
-  description: "Krud AI builds autonomous CLI agents for developers",
+  description: "Krud AI builds CLI tools for developers who live in the terminal",
   sameAs: ["https://github.com/max345789/krud-ai"],
 };
 

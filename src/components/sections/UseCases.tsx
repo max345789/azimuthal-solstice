@@ -5,16 +5,16 @@ import { ArrowUpRight } from "lucide-react";
 
 const useCases = [
   {
-    title: "The Creators",
-    description: "Focus purely on logic. Let the agent lay the bricks, configuration, and boilerplate while you sculpt.",
+    title: "Solo developers",
+    description: "Stop switching tabs to look up commands. Type what you want done and stay in your flow.",
   },
   {
-    title: "The Visionaries",
-    description: "Build prototypes effortlessly. Speak your idea and watch interfaces and architectures blossom.",
+    title: "Small teams",
+    description: "Onboard faster. New engineers can get things running without memorizing your entire setup.",
   },
   {
-    title: "The Collectives",
-    description: "Amplify your team's output. Automate the friction so your people can spend time creating.",
+    title: "Anyone who codes",
+    description: "Whether you're writing scripts, managing servers, or debugging deploys — krud handles the terminal work.",
   }
 ];
 
@@ -30,10 +30,10 @@ export function UseCases() {
         >
           <div className="flex-1">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Agents across <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">paradigms.</span>
+              Who uses <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">krud.</span>
             </h2>
             <p className="text-gray-400 text-xl font-medium max-w-lg">
-              Every workflow has its rhythm. The Krud Agent bends to your style instantly.
+              If you work in a terminal, krud saves you time. Simple as that.
             </p>
           </div>
           <div className="flex items-center gap-4">

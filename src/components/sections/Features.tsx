@@ -5,33 +5,33 @@ import { motion } from "framer-motion";
 
 const features = [
   {
-    name: "Architectural Precision",
-    description: "Write your vision in pure language. We translate sentiment into flawless structural code entirely autonomously.",
+    name: "Plain English Commands",
+    description: "Just tell it what you need. No remembering flags or googling syntax — krud works out the right command and runs it.",
     icon: Database,
   },
   {
-    name: "Defensive Logic",
-    description: "Systems that adapt naturally. Erroneous paths are discovered, analyzed, and pruned completely out of view.",
+    name: "Error Handling",
+    description: "When something fails, krud reads the error, tries to fix it, and lets you know what it changed. No silent failures.",
     icon: Shield,
   },
   {
-    name: "Rapid Horizon",
-    description: "Draft prototypes without friction. Move from thought to an interactable, live canvas in milliseconds.",
+    name: "Fast Iteration",
+    description: "Skip the back-and-forth. Describe your goal once and krud keeps going until it's done or asks you the one thing it can't guess.",
     icon: Zap,
   },
   {
-    name: "Seamless Ecosystem",
-    description: "Merge naturally into your existing environment with absolute zero friction, like water over glass.",
+    name: "Works With Your Stack",
+    description: "Drops into any project — Node, Python, Go, whatever. It reads your directory and works with what's already there.",
     icon: Layout,
   },
   {
-    name: "Iterative Synergy",
-    description: "Build upon bedrock. Your projects are scaffolded with unyielding, timeless continuous improvement loops.",
+    name: "Session Memory",
+    description: "Krud remembers what you were working on. Pick up mid-task without re-explaining context every time.",
     icon: RefreshCw,
   },
   {
-    name: "Total Clarity",
-    description: "Transparent models mapping output logic to clear inputs. Understand every piece of the puzzle at a glance.",
+    name: "Full Visibility",
+    description: "See every command before and after it runs. You're always in control — approve, skip, or take over at any point.",
     icon: Cpu,
   },
 ];
@@ -43,13 +43,13 @@ export function Features() {
         
         <div className="mb-24 flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1c1c1c] border border-white/5 text-xs font-semibold text-gray-300 mb-6 tracking-wide">
-            Automated Architecture
+            What&apos;s inside
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-            CLI agent tools carved for <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">precision.</span>
+            Built for real <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">terminal work.</span>
           </h2>
           <p className="text-gray-400 text-lg md:text-xl font-medium max-w-2xl">
-            Krud replaces rigid manual commands with an intelligent CLI agent. Step into an engine where your terminal executes autonomously on autopilot.
+            Type what you need done. Krud figures out the commands, runs them, and tells you what happened. That&apos;s it.
           </p>
         </div>
 

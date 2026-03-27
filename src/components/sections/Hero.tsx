@@ -41,15 +41,15 @@ export function Hero() {
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1c1c1c] border border-white/5 text-xs font-semibold text-gray-300 mb-8 w-fit tracking-wide shadow-md">
             <Zap className="w-3.5 h-3.5 text-gray-400" />
-            Unlock Your Terminal Spark! <ArrowRight className="w-3.5 h-3.5 ml-1" />
+            Free plan · No credit card <ArrowRight className="w-3.5 h-3.5 ml-1" />
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-bold tracking-tight text-white mb-4 sm:mb-6 leading-[1.15] max-w-6xl mx-auto drop-shadow-sm px-2">
-            The AI CLI Agent for Autonomous <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-transparent">Execution</span>
+            Type what you want. <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-500 to-transparent">Krud runs it.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-8 sm:mb-12 max-w-3xl mx-auto font-medium tracking-wide px-2">
-            Krud AI is an autonomous CLI agent that lives in your terminal. Run commands, fix bugs, and ship code faster — no browser, no context switching.
+            Krud lives in your terminal and figures out the right commands for you. Describe what you need — it runs it, checks the output, and tells you what happened.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
@@ -143,7 +143,7 @@ export function Hero() {
         </div>
 
         <div className="absolute bottom-6 sm:bottom-10 right-4 sm:right-10 hidden sm:flex flex-col items-end z-10">
-          <span className="text-sm font-medium text-[#c4cbb8] mb-3">AI horizons</span>
+          <span className="text-sm font-medium text-[#c4cbb8] mb-3">krud v1.0</span>
           <div className="flex gap-2">
             <div className="w-8 h-1 bg-white" />
             <div className="w-8 h-1 bg-white/10" />
