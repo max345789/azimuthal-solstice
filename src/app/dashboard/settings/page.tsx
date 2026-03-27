@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, User, Bell, Shield, Terminal } from "lucide-react";
+import { ArrowLeft, User, Shield, Terminal, Copy, Check, Pencil, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { API_BASE_URL } from "@/lib/config";
 
@@ -14,66 +14,88 @@ function DiamondIcon({ className }: { className?: string }) {
   );
 }
 
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  const handle = () => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button onClick={handle} className="p-1.5 rounded-md hover:bg-white/10 transition-colors cursor-pointer">
+      {copied ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5 text-gray-400" />}
+    </button>
+  );
+}
+
 export default function SettingsPage() {
-  const [email, setEmail] = useState("—");
-  const [name, setName] = useState("—");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [usageEvents, setUsageEvents] = useState(0);
+  const [subStatus, setSubStatus] = useState("trialing");
+  const [cliVersion, setCliVersion] = useState("—");
+  const [loading, setLoading] = useState(true);
+
+  // name edit state
+  const [editing, setEditing] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
+
+  const installCmd = `curl -fsSL https://install.krud.ai | sh`;
 
   useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
-    if (!token) return;
-    fetch(`${API_BASE_URL}/v1/account/me`, { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (data?.email) setEmail(data.email);
-        if (data?.name) setName(data.name);
-        else if (data?.email) setName(data.email.split("@")[0]);
-      })
-      .catch(() => {});
+    if (!token) { setLoading(false); return; }
+    const h = { Authorization: `Bearer ${token}` };
+
+    Promise.all([
+      fetch(`${API_BASE_URL}/v1/account/me`, { headers: h }).then(r => r.ok ? r.json() : null),
+      fetch(`${API_BASE_URL}/v1/account/subscription`, { headers: h }).then(r => r.ok ? r.json() : null),
+      fetch(`${API_BASE_URL}/v1/releases/latest`).then(r => r.ok ? r.json() : null),
+    ]).then(([me, sub, rel]) => {
+      if (me) {
+        setEmail(me.email ?? "");
+        const displayName = me.name || me.email?.split("@")[0] || "";
+        setName(displayName);
+        setNameInput(displayName);
+        setUsageEvents(me.usage_events ?? 0);
+      }
+      if (sub) setSubStatus(sub.status ?? "trialing");
+      if (rel) setCliVersion(rel.version ?? "—");
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
-  const handleRotateTokens = () => {
+  const saveName = async () => {
+    const trimmed = nameInput.trim();
+    if (!trimmed || trimmed === name) { setEditing(false); return; }
+    setSaving(true);
+    setSaveError("");
+    try {
+      const token = localStorage.getItem("krud_token");
+      const res = await fetch(`${API_BASE_URL}/v1/account/me`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ name: trimmed }),
+      });
+      if (!res.ok) throw new Error();
+      setName(trimmed);
+      setEditing(false);
+    } catch {
+      setSaveError("Failed to save. Try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const signOutAll = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("krud_token");
       window.location.href = "/";
     }
   };
 
-  const sections = [
-    {
-      icon: User,
-      title: "Account",
-      description: "Your email address and account details",
-      items: [
-        { label: "Email", value: email, type: "text" as const },
-        { label: "Display name", value: name, type: "text" as const },
-      ],
-    },
-    {
-      icon: Terminal,
-      title: "CLI",
-      description: "Manage your active CLI sessions",
-      items: [
-        { label: "Active sessions", value: "1 device connected", type: "info" as const },
-      ],
-    },
-    {
-      icon: Bell,
-      title: "Notifications",
-      description: "Control when krud AI sends you emails",
-      items: [
-        { label: "Usage alerts", value: "Enabled", type: "toggle" as const },
-        { label: "Billing updates", value: "Enabled", type: "toggle" as const },
-      ],
-    },
-    {
-      icon: Shield,
-      title: "Security",
-      description: "Manage your account security",
-      items: [
-        { label: "Session tokens", value: "Rotate all tokens", type: "action" as const },
-      ],
-    },
-  ];
+  const initials = name ? name.slice(0, 2).toUpperCase() : "??";
 
   return (
     <div className="min-h-screen bg-transparent">
@@ -98,46 +120,132 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10 space-y-6">
-        {sections.map((section, i) => (
-          <motion.div
-            key={section.title}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.08 * i }}
-            className="bg-[#0d1110] border border-[#ffffff0a] rounded-2xl p-6"
-          >
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
-                <section.icon className="w-4 h-4 text-gray-300" />
-              </div>
-              <div>
-                <div className="text-sm font-semibold text-white">{section.title}</div>
-                <div className="text-xs text-gray-400">{section.description}</div>
-              </div>
-            </div>
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10 space-y-5">
 
-            <div className="space-y-4 divide-y divide-white/5">
-              {section.items.map((item) => (
-                <div key={item.label} className="flex items-center justify-between pt-4 first:pt-0">
-                  <span className="text-sm text-gray-400">{item.label}</span>
-                  {item.type === "action" ? (
-                    <button
-                      onClick={handleRotateTokens}
-                      className="text-xs text-gray-200 border border-white/10 px-3 py-1.5 rounded-lg hover:border-red-500/40 hover:text-red-400 transition-colors cursor-pointer"
-                    >
-                      {item.value}
-                    </button>
-                  ) : item.type === "toggle" ? (
-                    <span className="text-xs text-gray-200 bg-white/5 px-2.5 py-1 rounded-full">{item.value}</span>
-                  ) : (
-                    <span className="text-sm text-white font-mono">{item.value}</span>
-                  )}
-                </div>
-              ))}
+        {/* Account */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-[#0d1110] border border-[#ffffff0a] rounded-2xl p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+              <User className="w-4 h-4 text-gray-300" />
             </div>
-          </motion.div>
-        ))}
+            <div>
+              <div className="text-sm font-semibold text-white">Account</div>
+              <div className="text-xs text-gray-400">Your profile and plan details</div>
+            </div>
+          </div>
+
+          {/* Avatar + name */}
+          <div className="flex items-center gap-4 mb-6 pb-6 border-b border-white/5">
+            <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white font-semibold text-sm shrink-0">
+              {loading ? "…" : initials}
+            </div>
+            <div className="min-w-0 flex-1">
+              {editing ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    autoFocus
+                    value={nameInput}
+                    onChange={e => setNameInput(e.target.value)}
+                    onKeyDown={e => { if (e.key === "Enter") saveName(); if (e.key === "Escape") setEditing(false); }}
+                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-white/30 w-48"
+                    maxLength={120}
+                  />
+                  <button onClick={saveName} disabled={saving} className="text-xs text-white bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 transition-colors cursor-pointer disabled:opacity-50">
+                    {saving ? "Saving…" : "Save"}
+                  </button>
+                  <button onClick={() => { setEditing(false); setNameInput(name); setSaveError(""); }} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors cursor-pointer">
+                    <X className="w-3.5 h-3.5 text-gray-400" />
+                  </button>
+                  {saveError && <span className="text-xs text-red-400">{saveError}</span>}
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-white">{loading ? "—" : name}</span>
+                  <button onClick={() => setEditing(true)} className="p-1 hover:bg-white/10 rounded-md transition-colors cursor-pointer">
+                    <Pencil className="w-3 h-3 text-gray-500" />
+                  </button>
+                </div>
+              )}
+              <div className="text-xs text-gray-400 mt-0.5">{loading ? "—" : email}</div>
+            </div>
+          </div>
+
+          {/* Stats row */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="bg-white/[0.03] rounded-xl p-4">
+              <div className="text-xs text-gray-400 mb-1">Plan</div>
+              <div className="text-sm font-semibold text-white capitalize">{loading ? "—" : subStatus}</div>
+            </div>
+            <div className="bg-white/[0.03] rounded-xl p-4">
+              <div className="text-xs text-gray-400 mb-1">Total messages</div>
+              <div className="text-sm font-semibold text-white font-mono">{loading ? "—" : usageEvents.toLocaleString()}</div>
+            </div>
+            <div className="bg-white/[0.03] rounded-xl p-4 col-span-2 sm:col-span-1">
+              <div className="text-xs text-gray-400 mb-1">Email</div>
+              <div className="text-sm font-semibold text-white truncate">{loading ? "—" : email}</div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* CLI */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="bg-[#0d1110] border border-[#ffffff0a] rounded-2xl p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+              <Terminal className="w-4 h-4 text-gray-300" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-white">CLI</div>
+              <div className="text-xs text-gray-400">Install and manage krud in your terminal</div>
+            </div>
+          </div>
+
+          <div className="space-y-4 divide-y divide-white/5">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-400">Latest version</span>
+              <span className="text-sm text-white font-mono">v{cliVersion}</span>
+            </div>
+            <div className="pt-4">
+              <div className="text-sm text-gray-400 mb-2">Install command</div>
+              <div className="flex items-center gap-2 bg-black/40 border border-white/5 rounded-xl px-4 py-3 font-mono text-xs text-gray-300">
+                <span className="flex-1 truncate">{installCmd}</span>
+                <CopyButton text={installCmd} />
+              </div>
+            </div>
+            <div className="pt-4 flex items-center justify-between">
+              <span className="text-sm text-gray-400">Update CLI</span>
+              <div className="flex items-center gap-2 bg-black/40 border border-white/5 rounded-xl px-3 py-2 font-mono text-xs text-gray-300">
+                <span>krud update</span>
+                <CopyButton text="krud update" />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Security */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }} className="bg-[#0d1110] border border-[#ffffff0a] rounded-2xl p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+              <Shield className="w-4 h-4 text-gray-300" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-white">Security</div>
+              <div className="text-xs text-gray-400">Session and access management</div>
+            </div>
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm text-white">Sign out all devices</div>
+              <div className="text-xs text-gray-400 mt-0.5">Removes your session token from this browser and CLI</div>
+            </div>
+            <button
+              onClick={signOutAll}
+              className="text-xs text-gray-200 border border-white/10 px-3 py-1.5 rounded-lg hover:border-red-500/40 hover:text-red-400 transition-colors cursor-pointer shrink-0"
+            >
+              Sign out
+            </button>
+          </div>
+        </motion.div>
+
       </main>
     </div>
   );
