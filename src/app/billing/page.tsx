@@ -8,7 +8,6 @@ import {
   Clock,
   Check,
   ArrowRight,
-  ArrowUpRight,
   Sparkles,
   Shield,
   Infinity,
@@ -51,6 +50,7 @@ export default function BillingPage() {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [tokenUsage, setTokenUsage] = useState<TokenUsage | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [now] = useState(() => Date.now());
 
   useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
@@ -117,7 +117,7 @@ export default function BillingPage() {
   const subStatus = subscription?.status ?? "trialing";
   const isActive = subStatus === "active";
   const trialEndsAt = subscription?.trial_ends_at ? new Date(subscription.trial_ends_at) : null;
-  const trialDaysLeft = trialEndsAt ? Math.max(0, Math.ceil((trialEndsAt.getTime() - Date.now()) / 86400000)) : null;
+  const trialDaysLeft = trialEndsAt ? Math.max(0, Math.ceil((trialEndsAt.getTime() - now) / 86400000)) : null;
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">

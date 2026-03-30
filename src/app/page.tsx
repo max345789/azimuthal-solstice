@@ -1,5 +1,4 @@
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import { MarketingShell } from "@/components/layout/MarketingShell";
 import { Hero } from "@/components/sections/Hero";
 import { ProblemSolution } from "@/components/sections/ProblemSolution";
 import { Features } from "@/components/sections/Features";
@@ -15,22 +14,22 @@ const softwareJsonLd = {
   applicationCategory: "DeveloperApplication",
   operatingSystem: "macOS, Linux",
   description:
-    "Krud AI is an autonomous AI CLI agent. Run commands, fix bugs, and ship code faster — right from your terminal.",
+    "Krud AI is a terminal-native AI agent that plans commands, asks before risky actions, executes in context, and explains what happened.",
   url: "https://dabcloud.in",
   downloadUrl: "https://install.krud.ai",
   offers: {
     "@type": "Offer",
     price: "0",
     priceCurrency: "USD",
-    description: "Free trial included",
+    description: "Free plan and trial available",
   },
   featureList: [
-    "Autonomous CLI agent",
-    "Run terminal commands with AI",
-    "Fix bugs automatically",
-    "Works in any terminal",
-    "macOS and Linux support",
-    "No browser required",
+    "Plain-English command planning",
+    "Readable execution receipts",
+    "Device-code authentication",
+    "Command approval before risky work",
+    "Background daemon queue",
+    "Release manifest discovery",
   ],
 };
 
@@ -40,42 +39,34 @@ const faqJsonLd = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "What is a CLI agent?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "A CLI agent is an AI-powered tool that runs autonomously inside your command-line interface (terminal). It understands natural language instructions, executes shell commands, fixes errors, and completes developer tasks without manual input.",
-      },
-    },
-    {
-      "@type": "Question",
       name: "What is Krud AI?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Krud AI is an autonomous CLI agent for developers. It lives in your terminal and can run commands, fix bugs, scaffold projects, and ship code — all from a single natural language instruction.",
+        text: "Krud AI is a terminal-native assistant that turns natural-language requests into command-line work, asks before risky actions, executes in context, and explains the results.",
       },
     },
     {
       "@type": "Question",
-      name: "How do I install the Krud AI CLI agent?",
+      name: "How do I install Krud AI?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Install Krud AI with one command: curl -fsSL https://install.krud.ai | sh. It supports macOS (Apple Silicon and Intel) and Linux (x86_64).",
+        text: "Install Krud AI with one command: curl -fsSL https://install.krud.ai | sh.",
       },
     },
     {
       "@type": "Question",
-      name: "How is Krud AI different from other CLI agents?",
+      name: "Does Krud AI require browser access?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Krud AI is built for full autonomy — it proposes commands, explains its reasoning, and executes multi-step workflows in your terminal without switching to a browser. It uses a rolling token budget system and works with your existing shell environment.",
+        text: "Only for device-code approval during login. The product remains terminal-first after authentication.",
       },
     },
     {
       "@type": "Question",
-      name: "Is Krud AI CLI agent free?",
+      name: "How does Krud AI handle risky commands?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes, Krud AI includes a free trial. You can install it for free and start using the CLI agent immediately with krud login and krud chat.",
+        text: "Krud AI keeps risky work reviewable by surfacing command proposals and pausing for approval before destructive actions run.",
       },
     },
   ],
@@ -92,19 +83,15 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="flex flex-col min-h-screen selection:bg-[#4a3f35] selection:text-[#fff1e0]">
-        <Header />
-        <main className="flex-1 w-full relative z-0">
-          <Hero />
-          <ProblemSolution />
-          <Features />
-          <UseCases />
-          <HowItWorks />
-          <SocialProof />
-          <CtaSection />
-        </main>
-        <Footer />
-      </div>
+      <MarketingShell>
+        <Hero />
+        <ProblemSolution />
+        <Features />
+        <UseCases />
+        <HowItWorks />
+        <SocialProof />
+        <CtaSection />
+      </MarketingShell>
     </>
   );
 }

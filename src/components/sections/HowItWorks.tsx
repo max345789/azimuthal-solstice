@@ -1,50 +1,47 @@
-"use client";
+import { Reveal, SectionHeading } from "@/components/site/ui";
 
-import { motion } from "framer-motion";
-
-const chapters = [
-  { num: "01", title: "Conceive", desc: "Speak or write your vision precisely. Share the structural goal you deeply wish to achieve. The canvas translates it instantly." },
-  { num: "02", title: "Flourish", desc: "Your agent tends to the details, nurturing the code, testing edges, and building the terminal logic entirely from scratch." },
-  { num: "03", title: "Harvest", desc: "Review the living, breathing result. The engine gracefully deploys your masterpiece smoothly to the target environment." }
+const productFacts = [
+  {
+    title: "Device-code auth",
+    text: "Sign in from the terminal with browser approval. No pasted tokens or extension handshakes.",
+  },
+  {
+    title: "Approval before damage",
+    text: "Destructive commands stay gated. The product is designed around review, not blind execution.",
+  },
+  {
+    title: "Daemon queue",
+    text: "Long-running work can leave the foreground and continue through the local background daemon.",
+  },
+  {
+    title: "Release manifests",
+    text: "The CLI can discover signed release artifacts and pull the right binary for the current machine.",
+  },
 ];
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 bg-[#050505] w-full flex justify-center">
-      <div className="w-full max-w-[95%]">
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-24"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1c1c1c] border border-white/5 text-xs font-semibold text-gray-300 mb-6 tracking-wide">
-            Automated Logic
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
-            How the CLI agent <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">works</span>
-          </h2>
-        </motion.div>
+    <section className="section-block">
+      <div className="shell">
+        <Reveal>
+          <SectionHeading
+            eyebrow="Product depth"
+            title="The details already exist."
+            description="The backend and CLI already support the product claims, so the UX can be crisp without pretending to do more than it does."
+          />
+        </Reveal>
 
-        <div className="flex flex-col lg:flex-row justify-center gap-6">
-          {chapters.map((chapter, idx) => (
-            <motion.div 
-              key={idx} 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: idx * 0.2 }}
-              className="flex-1 p-10 border border-white/5 rounded-[24px] sm:rounded-[32px] hover:border-white/10 transition-colors duration-500 bg-[#0a0c0b]"
+        <div className="feature-ledger">
+          {productFacts.map((item, index) => (
+            <Reveal
+              key={item.title}
+              delay={index * 0.07}
+              className="feature-ledger__item"
             >
-              <div className="flex items-center justify-between mb-12">
-                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-transparent backdrop-blur-sm">
-                  <span className="font-mono text-sm font-semibold text-gray-400">{chapter.num}</span>
-                </div>
-                <div className="h-px w-12 bg-white/10 hidden md:block" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">{chapter.title}</h3>
-              <p className="text-gray-400 text-lg font-medium leading-relaxed">{chapter.desc}</p>
-            </motion.div>
+              <span className="feature-ledger__index">0{index + 1}</span>
+              <strong>{item.title}</strong>
+              <p>{item.text}</p>
+            </Reveal>
           ))}
         </div>
       </div>

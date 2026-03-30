@@ -37,16 +37,29 @@ export default function SessionsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
-    if (!token) { setLoading(false); return; }
+    const loadSessions = async () => {
+      const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
+      if (!token) {
+        setLoading(false);
+        return;
+      }
 
-    fetch(`${API_BASE_URL}/v1/chat/sessions`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(r => r.ok ? r.json() : null)
-      .then(data => { if (data?.sessions) setSessions(data.sessions); })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      try {
+        const response = await fetch(`${API_BASE_URL}/v1/chat/sessions`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = response.ok ? await response.json() : null;
+        if (data?.sessions) {
+          setSessions(data.sessions);
+        }
+      } catch {
+        // Ignore session fetch failures and keep the empty state.
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void loadSessions();
   }, []);
 
   return (

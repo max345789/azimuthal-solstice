@@ -1,27 +1,97 @@
 import Link from "next/link";
-import { Rabbit } from "lucide-react";
+import { GitBranch } from "lucide-react";
+import { BrandMark } from "@/components/site/BrandMark";
+
+const footerGroups = [
+  {
+    title: "Product",
+    links: [
+      { href: "/", label: "Overview" },
+      { href: "/features", label: "Capabilities" },
+      { href: "/pricing", label: "Pricing" },
+      { href: "/login", label: "Access" },
+    ],
+  },
+  {
+    title: "Build",
+    links: [
+      { href: "/docs", label: "Documentation" },
+      { href: "/blog", label: "Release journal" },
+      {
+        href: "https://github.com/max345789/krud-ai",
+        label: "GitHub",
+        external: true,
+      },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { href: "/contact", label: "Contact" },
+      { href: "/terms", label: "Terms" },
+      { href: "/privacy", label: "Privacy" },
+    ],
+  },
+];
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/5 py-16 bg-[#050505] w-full flex justify-center">
-      <div className="w-full max-w-[95%] mx-auto flex flex-col md:flex-row justify-between items-center gap-6 px-4">
-        
-        <div className="flex items-center gap-3 cursor-pointer group">
-          <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center bg-[#151515]">
-            <Rabbit className="w-4 h-4 text-white" />
+    <footer className="site-footer">
+      <div className="shell site-footer__inner">
+        <div className="site-footer__lead">
+          <BrandMark />
+          <p>
+            Terminal-native AI for people who want receipts, approvals, and a
+            command trail instead of a glossy demo.
+          </p>
+          <div className="site-footer__status">
+            <span className="status-dot" />
+            <span>Mac-first CLI. Device auth. Background daemon.</span>
           </div>
-          <span className="font-semibold text-lg tracking-tight text-white">Krud AI</span>
         </div>
-        
-        <div className="flex items-center gap-8 text-sm font-medium text-gray-400">
-          <Link href="/blog/what-is-a-cli-agent" className="hover:text-white transition-colors">Philosophy</Link>
-          <Link href="/blog/how-to-install-krud-ai" className="hover:text-white transition-colors">Documentation</Link>
-          <Link href="https://github.com/max345789/krud-ai" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Security</Link>
+
+        <div className="site-footer__links">
+          {footerGroups.map((group) => (
+            <div key={group.title}>
+              <p className="footer-heading">{group.title}</p>
+              {group.links.map((item) =>
+                item.external ? (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="footer-link"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link key={item.label} href={item.href} className="footer-link">
+                    {item.label}
+                  </Link>
+                ),
+              )}
+            </div>
+          ))}
+
+          <div>
+            <p className="footer-heading">Open source</p>
+            <a
+              href="https://github.com/max345789/azimuthal-solstice"
+              target="_blank"
+              rel="noreferrer"
+              className="footer-link footer-link-inline"
+            >
+              <GitBranch size={14} />
+              Explore this repo
+            </a>
+          </div>
         </div>
-        
-        <div className="text-sm text-gray-600 font-medium">
-          © {new Date().getFullYear()} Krud AI. All rights strictly reserved.
-        </div>
+      </div>
+
+      <div className="shell site-footer__bottom">
+        <p>© {new Date().getFullYear()} Krud AI. MIT licensed.</p>
+        <p>Type the outcome. Review the plan. Run with confidence.</p>
       </div>
     </footer>
   );

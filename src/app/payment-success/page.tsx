@@ -21,6 +21,10 @@ interface ConfettiPiece {
   color: string;
   size: number;
   rotation: number;
+  driftA: number;
+  driftB: number;
+  borderRadius: "50%" | "2px";
+  endY: number;
 }
 
 function Confetti() {
@@ -28,6 +32,7 @@ function Confetti() {
 
   useEffect(() => {
     const colors = ["#a855f7", "#d8b4fe", "#22c55e", "#818cf8", "#f472b6", "#fbbf24"];
+    const endY = typeof window !== "undefined" ? window.innerHeight + 20 : 1000;
     const newPieces: ConfettiPiece[] = Array.from({ length: 20 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
@@ -36,8 +41,17 @@ function Confetti() {
       color: colors[Math.floor(Math.random() * colors.length)],
       size: 4 + Math.random() * 6,
       rotation: Math.random() * 360,
+      driftA: (Math.random() - 0.5) * 100,
+      driftB: (Math.random() - 0.5) * 60,
+      borderRadius: Math.random() > 0.5 ? "50%" : "2px",
+      endY,
     }));
-    setPieces(newPieces);
+
+    const frame = window.requestAnimationFrame(() => {
+      setPieces(newPieces);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   return (
@@ -47,8 +61,8 @@ function Confetti() {
           key={piece.id}
           initial={{ y: -20, x: 0, opacity: 1, rotate: 0 }}
           animate={{
-            y: typeof window !== "undefined" ? window.innerHeight + 20 : 1000,
-            x: [0, (Math.random() - 0.5) * 100, (Math.random() - 0.5) * 60],
+            y: piece.endY,
+            x: [0, piece.driftA, piece.driftB],
             opacity: [1, 1, 0],
             rotate: piece.rotation + 720,
           }}
@@ -60,7 +74,7 @@ function Confetti() {
             width: piece.size,
             height: piece.size,
             backgroundColor: piece.color,
-            borderRadius: Math.random() > 0.5 ? "50%" : "2px",
+            borderRadius: piece.borderRadius,
           }}
         />
       ))}

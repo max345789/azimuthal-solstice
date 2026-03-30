@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { API_BASE_URL } from "@/lib/config";
 import {
-  Rabbit,
   LayoutDashboard,
   MessageSquare,
   CreditCard,
@@ -89,27 +88,41 @@ export default function DashboardPage() {
   const [tokenUsage, setTokenUsage] = useState<TokenUsage | null>(null);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
+  const [now] = useState(() => Date.now());
 
   const tokensUsed = tokenUsage?.used ?? 0;
   const tokensTotal = tokenUsage?.limit ?? 40000;
   const tokenPercentage = tokensTotal > 0 ? Math.min(100, (tokensUsed / tokensTotal) * 100) : 0;
 
   useEffect(() => {
-    const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
-    if (!token) { setLoading(false); return; }
+    const loadDashboard = async () => {
+      const token = typeof window !== "undefined" ? localStorage.getItem("krud_token") : null;
+      if (!token) {
+        setLoading(false);
+        return;
+      }
 
-    const headers = { Authorization: `Bearer ${token}` };
-    Promise.all([
-      fetch(`${API_BASE_URL}/v1/account/me`, { headers }).then(r => r.ok ? r.json() : null),
-      fetch(`${API_BASE_URL}/v1/billing`, { headers }).then(r => r.ok ? r.json() : null),
-      fetch(`${API_BASE_URL}/v1/account/token-usage`, { headers }).then(r => r.ok ? r.json() : null),
-      fetch(`${API_BASE_URL}/v1/chat/sessions`, { headers }).then(r => r.ok ? r.json() : null),
-    ]).then(([acc, bill, tokens, sess]) => {
-      if (acc) setAccount(acc);
-      if (bill) setBilling(bill);
-      if (tokens) setTokenUsage(tokens);
-      if (sess?.sessions) setSessions(sess.sessions.slice(0, 4));
-    }).catch(() => {}).finally(() => setLoading(false));
+      const headers = { Authorization: `Bearer ${token}` };
+      try {
+        const [acc, bill, tokens, sess] = await Promise.all([
+          fetch(`${API_BASE_URL}/v1/account/me`, { headers }).then(r => r.ok ? r.json() : null),
+          fetch(`${API_BASE_URL}/v1/billing`, { headers }).then(r => r.ok ? r.json() : null),
+          fetch(`${API_BASE_URL}/v1/account/token-usage`, { headers }).then(r => r.ok ? r.json() : null),
+          fetch(`${API_BASE_URL}/v1/chat/sessions`, { headers }).then(r => r.ok ? r.json() : null),
+        ]);
+
+        if (acc) setAccount(acc);
+        if (bill) setBilling(bill);
+        if (tokens) setTokenUsage(tokens);
+        if (sess?.sessions) setSessions(sess.sessions.slice(0, 4));
+      } catch {
+        // Ignore dashboard hydration failures and keep the empty state.
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void loadDashboard();
   }, []);
 
   const handleCopy = () => {
@@ -131,7 +144,7 @@ export default function DashboardPage() {
   const planLabel = planStatus.charAt(0).toUpperCase() + planStatus.slice(1);
   const trialEndsAt = billing?.subscription?.trial_ends_at;
   const trialDaysLeft = trialEndsAt
-    ? Math.max(0, Math.ceil((new Date(trialEndsAt).getTime() - Date.now()) / 86400000))
+    ? Math.max(0, Math.ceil((new Date(trialEndsAt).getTime() - now) / 86400000))
     : null;
 
   return (
